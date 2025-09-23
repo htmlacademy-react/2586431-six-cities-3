@@ -5,7 +5,6 @@ function LoginPage(): JSX.Element {
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>6 cities: authorization</title>
-      <link rel="stylesheet" href="css/main.css" />
       <div style={{ display: 'none' }}>
         <svg xmlns="http://www.w3.org/2000/svg">
           <symbol id="icon-arrow-select" viewBox="0 0 7 4">
