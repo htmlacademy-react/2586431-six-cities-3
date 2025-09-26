@@ -1,5 +1,4 @@
 import { PlaceCard } from '../../components/place-card/place-card';
-import { Header } from '../../components/header/header';
 
 type MainPageProps = {
   placesCount: number;
@@ -8,7 +7,6 @@ type MainPageProps = {
 function MainPage({ placesCount }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
-      <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -98,4 +96,4 @@ function MainPage({ placesCount }: MainPageProps): JSX.Element {
   );
 }
 
-export default MainPage;
+export { MainPage };
