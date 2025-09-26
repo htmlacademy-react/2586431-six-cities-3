@@ -98,4 +98,4 @@ function MainPage({ placesCount }: MainPageProps): JSX.Element {
   );
 }
 
-export default MainPage;
+export { MainPage };
