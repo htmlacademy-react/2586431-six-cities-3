@@ -1,10 +1,12 @@
-import { PlaceCard } from '../../components/place-card/place-card';
+import { OffersList } from '../../components/offers-list/offers-list';
+import { TOffer } from '../../types/offer';
 
 type MainPageProps = {
   placesCount: number;
+  offers: TOffer[];
 };
 
-function MainPage({ placesCount }: MainPageProps): JSX.Element {
+function MainPage({ placesCount, offers }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <main className="page__main page__main--index">
@@ -60,7 +62,7 @@ function MainPage({ placesCount }: MainPageProps): JSX.Element {
                     <use xlinkHref="#icon-arrow-select" />
                   </svg>
                 </span>
-                <ul className="places__options places__options--custom places__options--opened">
+                <ul className="places__options places__options--custom">
                   <li
                     className="places__option places__option--active"
                     tabIndex={0}
@@ -78,13 +80,7 @@ function MainPage({ placesCount }: MainPageProps): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <div className="cities__places-list places__list tabs__content">
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-                <PlaceCard />
-              </div>
+              <OffersList offers={offers} />
             </section>
             <div className="cities__right-section">
               <section className="cities__map map" />
