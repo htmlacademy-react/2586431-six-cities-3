@@ -2,11 +2,10 @@ import { OffersList } from '../../components/offers-list/offers-list';
 import { TOffer } from '../../types/offer';
 
 type MainPageProps = {
-  placesCount: number;
   offers: TOffer[];
 };
 
-function MainPage({ placesCount, offers }: MainPageProps): JSX.Element {
+function MainPage({ offers }: MainPageProps): JSX.Element {
   return (
     <div className="page page--gray page--main">
       <main className="page__main page__main--index">
@@ -52,7 +51,7 @@ function MainPage({ placesCount, offers }: MainPageProps): JSX.Element {
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
               <b className="places__found">
-                {placesCount} places to stay in Amsterdam
+                {offers.length} places to stay in Amsterdam
               </b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>

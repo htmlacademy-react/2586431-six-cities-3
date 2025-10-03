@@ -1,4 +1,4 @@
-import { ReviewSubmissionForm } from '../../components/review-submission-form/review-submission-form';
+import { ReviewForm } from '../../components/review-form/review-form';
 
 function OfferPage(): JSX.Element {
   return (
@@ -168,7 +168,7 @@ function OfferPage(): JSX.Element {
                     </div>
                   </li>
                 </ul>
-                <ReviewSubmissionForm onSubmit={() => {}} />
+                <ReviewForm />
               </section>
             </div>
           </div>

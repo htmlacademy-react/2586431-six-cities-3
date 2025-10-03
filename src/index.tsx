@@ -7,12 +7,8 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 
-export const Setting = {
-  placesCount: 312,
-};
-
 root.render(
   <React.StrictMode>
-    <App placesCount={Setting.placesCount} offers={offers} />
+    <App offers={offers} />
   </React.StrictMode>
 );

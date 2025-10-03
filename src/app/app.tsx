@@ -10,20 +10,16 @@ import Layout from '../components/layout/layout';
 import { TOffer } from '../types/offer';
 
 type AppProps = {
-  placesCount: number;
   offers: TOffer[];
 };
 
-function App({ placesCount, offers }: AppProps): JSX.Element {
+function App({ offers }: AppProps): JSX.Element {
   const authorizationStatus = AuthorizationStatus.Auth;
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route
-            index
-            element={<MainPage placesCount={placesCount} offers={offers} />}
-          />
+          <Route index element={<MainPage offers={offers} />} />
           <Route path={AppRoute.Login} element={<LoginPage />} />
 
           <Route
