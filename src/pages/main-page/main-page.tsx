@@ -1,3 +1,5 @@
+import { useState } from 'react';
+import Map from '../../components/map/map';
 import { OffersList } from '../../components/offers-list/offers-list';
 import { TOffer } from '../../types/offer';
 
@@ -6,6 +8,12 @@ type MainPageProps = {
 };
 
 function MainPage({ offers }: MainPageProps): JSX.Element {
+  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+
+  const handleOfferHover = (offerId: string | null) => {
+    setActiveOfferId(offerId);
+  };
+
   return (
     <div className="page page--gray page--main">
       <main className="page__main page__main--index">
@@ -79,10 +87,14 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                   </li>
                 </ul>
               </form>
-              <OffersList offers={offers} />
+              <OffersList offers={offers} onOfferHover={handleOfferHover} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map" />
+              <Map
+                city={offers[0]}
+                points={offers}
+                selectedOfferId={activeOfferId}
+              />
             </div>
           </div>
         </div>

@@ -1,4 +1,13 @@
-import { TOffer } from '../types/offer';
+import { TOffer, TOfferCity } from '../../types/offer';
+
+export const AMSTERDAM: TOfferCity = {
+  name: 'Amsterdam',
+  location: {
+    latitude: 52.37454,
+    longitude: 4.897976,
+    zoom: 12,
+  },
+};
 
 export const offers: TOffer[] = [
   {
@@ -6,10 +15,7 @@ export const offers: TOffer[] = [
     title: 'Beautiful & luxurious studio at great location',
     type: 'apartment',
     price: 120,
-    city: {
-      name: 'Amsterdam',
-      location: { latitude: 52.37454, longitude: 4.897976, zoom: 12 },
-    },
+    city: AMSTERDAM,
     location: {
       latitude: 52.3909553943508,
       longitude: 4.85309666406198,
@@ -25,12 +31,9 @@ export const offers: TOffer[] = [
     title: 'Wood and stone place',
     type: 'room',
     price: 80,
-    city: {
-      name: 'Amsterdam',
-      location: { latitude: 52.37454, longitude: 4.897976, zoom: 12 },
-    },
+    city: AMSTERDAM,
     location: {
-      latitude: 52.369553943508,
+      latitude: 52.3609553943508,
       longitude: 4.85309666406198,
       zoom: 8,
     },
@@ -44,13 +47,10 @@ export const offers: TOffer[] = [
     title: 'Canal View Prinsengracht',
     type: 'apartment',
     price: 132,
-    city: {
-      name: 'Cologne',
-      location: { latitude: 52.37454, longitude: 4.897976, zoom: 12 },
-    },
+    city: AMSTERDAM,
     location: {
-      latitude: 52.3909553943508,
-      longitude: 4.929309666406198,
+      latitude: 52.3809553943508,
+      longitude: 4.939309666406198,
       zoom: 8,
     },
     isFavorite: false,
@@ -63,13 +63,10 @@ export const offers: TOffer[] = [
     title: 'Nice, cozy, warm big bed apartment',
     type: 'apartment',
     price: 180,
-    city: {
-      name: 'Amsterdam',
-      location: { latitude: 52.37454, longitude: 4.897976, zoom: 12 },
-    },
+    city: AMSTERDAM,
     location: {
-      latitude: 52.3809553943508,
-      longitude: 4.939309666406198,
+      latitude: 52.3909553943508,
+      longitude: 4.929309666406198,
       zoom: 8,
     },
     isFavorite: false,
