@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Map from '../../components/map/map';
 import { OffersList } from '../../components/offers-list/offers-list';
 import { TOffer } from '../../types/offer';
+import { AMSTERDAM } from '../../mocks/offers/offers';
 
 type MainPageProps = {
   offers: TOffer[];
@@ -91,8 +92,8 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
             </section>
             <div className="cities__right-section">
               <Map
-                city={offers[0]}
-                points={offers}
+                centerLocation={AMSTERDAM.location}
+                offers={offers}
                 selectedOfferId={activeOfferId}
               />
             </div>

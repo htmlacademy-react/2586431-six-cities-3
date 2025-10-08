@@ -1,13 +1,13 @@
 import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import useMap from '../useMap/useMap';
-import { TOffer } from '../../types/offer';
+import { TLocation, TOffer } from '../../types/offer';
 import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../const/const';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
-  city: TOffer;
-  points: TOffer[];
+  centerLocation: TLocation;
+  offers: TOffer[];
   selectedOfferId: string | null;
 };
 
@@ -24,23 +24,23 @@ const currentCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const { city, points, selectedOfferId } = props;
+  const { centerLocation, offers, selectedOfferId } = props;
 
   const mapRef = useRef(null);
-  const map = useMap(mapRef, city);
+  const map = useMap(mapRef, centerLocation);
 
   useEffect(() => {
     if (map) {
       const markerLayer = layerGroup().addTo(map);
-      points.forEach((point) => {
+      offers.forEach((offer) => {
         const marker = new Marker({
-          lat: point.location.latitude,
-          lng: point.location.longitude,
+          lat: offer.location.latitude,
+          lng: offer.location.longitude,
         });
 
         marker
           .setIcon(
-            selectedOfferId !== undefined && point.id === selectedOfferId
+            selectedOfferId !== undefined && offer.id === selectedOfferId
               ? currentCustomIcon
               : defaultCustomIcon
           )
@@ -51,7 +51,7 @@ function Map(props: MapProps): JSX.Element {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, points, selectedOfferId]);
+  }, [map, offers, selectedOfferId]);
 
   return (
     <div className="cities__map map" style={{ height: '500px' }} ref={mapRef} />
