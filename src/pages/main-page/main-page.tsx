@@ -95,6 +95,7 @@ function MainPage({ offers }: MainPageProps): JSX.Element {
                 centerLocation={AMSTERDAM.location}
                 offers={offers}
                 selectedOfferId={activeOfferId}
+                className="cities__map"
               />
             </div>
           </div>

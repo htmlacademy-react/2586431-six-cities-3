@@ -5,11 +5,13 @@ import { useState } from 'react';
 type OffersListProps = {
   offers: TOffer[];
   onOfferHover: (offerId: string | null) => void;
+  viewMode?: 'cities' | 'near-places';
 };
 
 export function OffersList({
   offers,
   onOfferHover,
+  viewMode = 'cities',
 }: OffersListProps): JSX.Element {
   const [, setActiveOfferId] = useState<string | null>(null);
 
@@ -19,9 +21,14 @@ export function OffersList({
   };
 
   return (
-    <div className="cities__places-list places__list tabs__content">
+    <div
+      className={`${
+        viewMode === 'near-places' ? 'near-places__list' : 'cities__places-list'
+      } places__list tabs__content`}
+    >
       {offers.map((offer) => (
         <PlaceCard
+          viewMode={viewMode}
           key={offer.id}
           offer={offer}
           onMouseEnter={() => handleOfferHover(offer.id)}

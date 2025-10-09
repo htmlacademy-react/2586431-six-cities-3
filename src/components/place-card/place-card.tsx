@@ -5,7 +5,7 @@ type PlaceCardProps = {
   offer: TOffer;
   onMouseEnter?: () => void;
   onMouseLeave?: () => void;
-  viewMode?: 'cities' | 'favorites';
+  viewMode?: 'cities' | 'favorites' | 'near-places';
 };
 
 export function PlaceCard({

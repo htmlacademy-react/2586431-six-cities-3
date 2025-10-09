@@ -33,7 +33,10 @@ function App({ offers }: AppProps): JSX.Element {
               </PrivateRoute>
             }
           />
-          <Route path={AppRoute.Offer} element={<OfferPage />} />
+          <Route
+            path={AppRoute.Offer}
+            element={<OfferPage offers={offers.slice(0, 3)} />}
+          />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>
