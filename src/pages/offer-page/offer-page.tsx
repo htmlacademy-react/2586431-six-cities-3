@@ -4,18 +4,22 @@ import { AMSTERDAM } from '../../mocks/offers/offers';
 import Map from '../../components/map/map';
 import { TOffer } from '../../types/offer';
 import { OffersList } from '../../components/offers-list/offers-list';
-import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useMemo } from 'react';
 
 type OfferPageProps = {
   offers: TOffer[];
 };
 
-function OfferPage({ offers }: OfferPageProps): JSX.Element {
-  const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
+type OfferPageParams = { id: string };
 
-  const handleOfferHover = (offerId: string | null) => {
-    setActiveOfferId(offerId);
-  };
+function OfferPage({ offers }: OfferPageProps): JSX.Element {
+  const { id } = useParams<OfferPageParams>();
+
+  const nearPlaces = useMemo(
+    () => offers.filter((offer) => offer.id !== id),
+    [offers, id]
+  );
 
   return (
     <div className="page">
@@ -157,7 +161,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
           <Map
             centerLocation={AMSTERDAM.location}
             offers={offers}
-            selectedOfferId={activeOfferId}
+            selectedOfferId={id}
             className="offer__map"
           />
         </section>
@@ -166,11 +170,7 @@ function OfferPage({ offers }: OfferPageProps): JSX.Element {
             <h2 className="near-places__title">
               Other places in the neighbourhood
             </h2>
-            <OffersList
-              offers={offers}
-              onOfferHover={handleOfferHover}
-              viewMode="near-places"
-            />
+            <OffersList offers={nearPlaces} viewMode="near-places" />
           </section>
         </div>
       </main>

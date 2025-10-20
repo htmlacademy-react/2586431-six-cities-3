@@ -8,7 +8,7 @@ import 'leaflet/dist/leaflet.css';
 type MapProps = {
   centerLocation: TLocation;
   offers: TOffer[];
-  selectedOfferId: string | null;
+  selectedOfferId?: string | null;
   className?: string;
 };
 

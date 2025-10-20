@@ -4,7 +4,7 @@ import { useState } from 'react';
 
 type OffersListProps = {
   offers: TOffer[];
-  onOfferHover: (offerId: string | null) => void;
+  onOfferHover?: (offerId: string | null) => void;
   viewMode?: 'cities' | 'near-places';
 };
 
@@ -17,7 +17,7 @@ export function OffersList({
 
   const handleOfferHover = (offerId: string | null) => {
     setActiveOfferId(offerId);
-    onOfferHover(offerId);
+    onOfferHover?.(offerId);
   };
 
   return (
