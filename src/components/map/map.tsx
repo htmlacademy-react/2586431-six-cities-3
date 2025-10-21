@@ -8,7 +8,8 @@ import 'leaflet/dist/leaflet.css';
 type MapProps = {
   centerLocation: TLocation;
   offers: TOffer[];
-  selectedOfferId: string | null;
+  selectedOfferId?: string | null;
+  className?: string;
 };
 
 const defaultCustomIcon = new Icon({
@@ -24,7 +25,7 @@ const currentCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const { centerLocation, offers, selectedOfferId } = props;
+  const { centerLocation, offers, selectedOfferId, className } = props;
 
   const mapRef = useRef(null);
   const map = useMap(mapRef, centerLocation);
@@ -54,7 +55,11 @@ function Map(props: MapProps): JSX.Element {
   }, [map, offers, selectedOfferId]);
 
   return (
-    <div className="cities__map map" style={{ height: '500px' }} ref={mapRef} />
+    <div
+      className={`${className ?? ''} map`}
+      style={{ height: '500px' }}
+      ref={mapRef}
+    />
   );
 }
 
