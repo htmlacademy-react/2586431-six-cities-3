@@ -1,12 +1,18 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { TOffer } from '../../types/offer';
+import { useSelector } from 'react-redux';
+import { State } from '../../types/state/state';
+import { store } from '../../store';
+import { loadOffersList } from '../../store/action/action';
 
-type FavoritesPageProps = {
-  offers: TOffer[];
-};
+function FavoritesPage(): JSX.Element {
+  // пока у нас нет отдельных favoriteOffersList
+  const offers = useSelector((state: State) => state.offersList);
+  useEffect(() => {
+    store.dispatch(loadOffersList());
+  }, []);
 
-function FavoritesPage({ offers }: FavoritesPageProps): JSX.Element {
   const groupedOffers = useMemo(() => {
     const result = {} as Record<string, TOffer[]>;
     offers.forEach((offer) => {
