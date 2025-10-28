@@ -7,19 +7,14 @@ import { OfferPage } from '../pages/offer-page/offer-page';
 import { NotFoundPage } from '../pages/404-page/404-page';
 import PrivateRoute from '../components/private-route/private-route';
 import Layout from '../components/layout/layout';
-import { TOffer } from '../types/offer';
 
-type AppProps = {
-  offers: TOffer[];
-};
-
-function App({ offers }: AppProps): JSX.Element {
+function App(): JSX.Element {
   const authorizationStatus = AuthorizationStatus.Auth;
   return (
     <BrowserRouter>
       <Routes>
         <Route path={AppRoute.Root} element={<Layout />}>
-          <Route index element={<MainPage offers={offers} />} />
+          <Route index element={<MainPage />} />
           <Route path={AppRoute.Login} element={<LoginPage />} />
 
           <Route
@@ -29,14 +24,11 @@ function App({ offers }: AppProps): JSX.Element {
                 accessGranted={authorizationStatus === AuthorizationStatus.Auth}
                 redirectTo={AppRoute.Login}
               >
-                <FavoritesPage offers={offers} />
+                <FavoritesPage />
               </PrivateRoute>
             }
           />
-          <Route
-            path={AppRoute.Offer}
-            element={<OfferPage offers={offers} />}
-          />
+          <Route path={AppRoute.Offer} element={<OfferPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

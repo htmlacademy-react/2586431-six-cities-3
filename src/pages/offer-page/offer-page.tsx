@@ -2,20 +2,17 @@ import { ReviewForm } from '../../components/review-form/review-form';
 import { ReviewsList } from '../../components/reviews-list/reviews-list';
 import { AMSTERDAM } from '../../mocks/offers/offers';
 import Map from '../../components/map/map';
-import { TOffer } from '../../types/offer';
 import { OffersList } from '../../components/offers-list/offers-list';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
-
-type OfferPageProps = {
-  offers: TOffer[];
-};
+import { useSelector } from 'react-redux';
+import { State } from '../../types/state/state';
 
 type OfferPageParams = { id: string };
 
-function OfferPage({ offers }: OfferPageProps): JSX.Element {
+function OfferPage(): JSX.Element {
   const { id } = useParams<OfferPageParams>();
-
+  const offers = useSelector((state: State) => state.offersList);
   const nearPlaces = useMemo(
     () => offers.filter((offer) => offer.id !== id),
     [offers, id]
