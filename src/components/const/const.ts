@@ -25,3 +25,33 @@ export const CITIES = [
   'Hamburg',
   'Dusseldorf',
 ];
+
+export type USortingOptionValue =
+  | 'popular'
+  | 'price-low-to-high'
+  | 'price-high-to-low'
+  | 'top-rated-first';
+
+export type TSortingOption = {
+  label: string;
+  value: USortingOptionValue;
+};
+
+export const SORTING_OPTIONS: TSortingOption[] = [
+  {
+    label: 'Popular',
+    value: 'popular',
+  },
+  {
+    label: 'Price: low to high',
+    value: 'price-low-to-high',
+  },
+  {
+    label: 'Price: high to low',
+    value: 'price-high-to-low',
+  },
+  {
+    label: 'Top rated first',
+    value: 'top-rated-first',
+  },
+];
