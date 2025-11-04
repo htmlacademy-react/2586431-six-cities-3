@@ -1,8 +1,8 @@
 import { useMemo, useState } from 'react';
-import { SORTING_OPTIONS, USortingOptionValue } from '../const/const';
+import { SORTING_OPTIONS, USortingOptionValue } from '../../constants';
 import { useSelector } from 'react-redux';
-import { State } from '../../types/state/state';
-import { changeSort } from '../../store/action/action';
+import { State } from '../../types/state';
+import { changeSort } from '../../store/actions';
 import { store } from '../../store';
 
 export const SortingOptions = () => {

@@ -1,7 +1,7 @@
 export type TLocation = {
   latitude: number;
   longitude: number;
-  zoom: number;
+  zoom?: number;
 };
 
 export type TOfferCity = {

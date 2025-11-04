@@ -2,9 +2,9 @@ import { useEffect, useMemo } from 'react';
 import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
 import { TOffer } from '../../types/offer';
 import { useSelector } from 'react-redux';
-import { State } from '../../types/state/state';
+import { State } from '../../types/state';
 import { store } from '../../store';
-import { loadOffersList } from '../../store/action/action';
+import { loadOffersList } from '../../store/api-actions';
 
 function FavoritesPage(): JSX.Element {
   // пока у нас нет отдельных favoriteOffersList

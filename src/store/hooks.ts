@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { useMemo } from 'react';
-import { State } from '../../types/state/state';
-import { TOffer } from '../../types/offer';
+import { State } from '../types/state';
+import { TOffer } from '../types/offer';
 
 const sortPriceLowToHigh = (offers: TOffer[]) =>
   offers.sort((a, b) => a.price - b.price);

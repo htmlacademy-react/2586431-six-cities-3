@@ -1,14 +1,15 @@
 import { useState, useEffect } from 'react';
 import Map from '../../components/map/map';
 import { OffersList } from '../../components/offers-list/offers-list';
-import { AMSTERDAM } from '../../mocks/offers/offers';
-import { useOffersList as useOffersList } from '../../store/hooks/hooks';
-import { changeCity, loadOffersList } from '../../store/action/action';
+import { useOffersList as useOffersList } from '../../store/hooks';
+import { changeCity } from '../../store/actions';
+import { loadOffersList } from '../../store/api-actions';
 import { store } from '../../store';
 import { useSelector } from 'react-redux';
-import { State } from '../../types/state/state';
-import { CITIES } from '../../components/const/const';
+import { State } from '../../types/state';
+import { CITIES, CITY_CENTER_LOCATIONS } from '../../constants';
 import { SortingOptions } from '../../components/sorting-options/sorting-options';
+import { Spinner } from '../../components/spinner/spinner';
 
 const CityItem = ({ city }: { city: string }) => {
   const isActive = useSelector((state: State) => state.city === city);
@@ -34,6 +35,7 @@ function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const offers = useOffersList();
   const city = useSelector((state: State) => state.city);
+  const isLoading = useSelector((state: State) => state.offersListLoading);
 
   useEffect(() => {
     store.dispatch(loadOffersList());
@@ -42,6 +44,10 @@ function MainPage(): JSX.Element {
   const handleOfferHover = (offerId: string | null) => {
     setActiveOfferId(offerId);
   };
+
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <div className="page page--gray page--main">
@@ -68,7 +74,7 @@ function MainPage(): JSX.Element {
             </section>
             <div className="cities__right-section">
               <Map
-                centerLocation={AMSTERDAM.location}
+                centerLocation={CITY_CENTER_LOCATIONS[city]}
                 offers={offers}
                 selectedOfferId={activeOfferId}
                 className="cities__map"

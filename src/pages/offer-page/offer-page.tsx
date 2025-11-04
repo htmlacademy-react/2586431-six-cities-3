@@ -1,12 +1,11 @@
 import { ReviewForm } from '../../components/review-form/review-form';
 import { ReviewsList } from '../../components/reviews-list/reviews-list';
-import { AMSTERDAM } from '../../mocks/offers/offers';
 import Map from '../../components/map/map';
 import { OffersList } from '../../components/offers-list/offers-list';
 import { useParams } from 'react-router-dom';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { State } from '../../types/state/state';
+import { State } from '../../types/state';
 
 type OfferPageParams = { id: string };
 
@@ -156,7 +155,7 @@ function OfferPage(): JSX.Element {
             </div>
           </div>
           <Map
-            centerLocation={AMSTERDAM.location}
+            centerLocation={offers[0]?.city.location}
             offers={offers}
             selectedOfferId={id}
             className="offer__map"

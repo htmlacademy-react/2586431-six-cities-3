@@ -1,5 +1,5 @@
 import { Outlet, useLocation } from 'react-router-dom';
-import { AppRoute } from '../const/const';
+import { AppRoute } from '../../constants';
 
 const getLayoutState = (pathname: AppRoute) => {
   let rootClassName = '';
