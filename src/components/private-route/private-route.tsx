@@ -1,5 +1,5 @@
 import { Navigate } from 'react-router-dom';
-import { AppRoute } from '../const/const';
+import { AppRoute } from '../../constants';
 
 type PrivateRouteProps = {
   /** Доступ разрешен */

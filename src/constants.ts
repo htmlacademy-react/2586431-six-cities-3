@@ -1,3 +1,5 @@
+import { TLocation } from './types/offer';
+
 export enum AppRoute {
   Root = '/',
   Login = '/login',
@@ -25,6 +27,35 @@ export const CITIES = [
   'Hamburg',
   'Dusseldorf',
 ];
+
+export const CITY_CENTER_LOCATIONS: Record<string, TLocation> = {
+  Paris: {
+    latitude: 48.8566,
+    longitude: 2.3522,
+  },
+  Cologne: {
+    latitude: 50.938361,
+    longitude: 6.959974,
+  },
+  Brussels: {
+    latitude: 50.8476,
+    longitude: 4.3572,
+  },
+  Amsterdam: {
+    latitude: 52.370216,
+    longitude: 4.895168,
+  },
+  Hamburg: {
+    latitude: 53.551086,
+    longitude: 9.993682,
+  },
+  Dusseldorf: {
+    latitude: 51.225402,
+    longitude: 6.776314,
+  },
+};
+
+export const DEFAULT_ZOOM = 12;
 
 export type USortingOptionValue =
   | 'popular'
@@ -55,3 +86,5 @@ export const SORTING_OPTIONS: TSortingOption[] = [
     value: 'top-rated-first',
   },
 ];
+
+export const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities';

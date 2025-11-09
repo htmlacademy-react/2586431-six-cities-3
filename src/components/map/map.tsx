@@ -2,7 +2,11 @@ import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import useMap from '../useMap/useMap';
 import { TLocation, TOffer } from '../../types/offer';
-import { URL_MARKER_DEFAULT, URL_MARKER_CURRENT } from '../const/const';
+import {
+  URL_MARKER_DEFAULT,
+  URL_MARKER_CURRENT,
+  DEFAULT_ZOOM,
+} from '../../constants';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
@@ -53,6 +57,23 @@ function Map(props: MapProps): JSX.Element {
       };
     }
   }, [map, offers, selectedOfferId]);
+
+  useEffect(() => {
+    if (map) {
+      map.setView(
+        {
+          lat: centerLocation.latitude,
+          lng: centerLocation.longitude,
+        },
+        centerLocation.zoom ?? DEFAULT_ZOOM
+      );
+    }
+  }, [
+    map,
+    centerLocation.latitude,
+    centerLocation.longitude,
+    centerLocation.zoom,
+  ]);
 
   return (
     <div
