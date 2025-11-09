@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { AppRoute } from '../../constants';
+import { AppRoute, AuthorizationStatus } from '../../constants';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
 import { logout } from '../../store/api-actions';
@@ -31,6 +31,7 @@ function Layout() {
     pathname as AppRoute
   );
   const user = useSelector((state: State) => state.user);
+  const auth = useSelector((state: State) => state.authorizationStatus);
   const handleLogout = () => {
     store.dispatch(logout()).then(() => {
       navigate(AppRoute.Root);
@@ -57,7 +58,7 @@ function Layout() {
             </div>
             {shouldRenderUser ? (
               <nav className="header__nav">
-                {user && (
+                {auth === AuthorizationStatus.Auth && user && (
                   <ul className="header__nav-list">
                     <li className="header__nav-item user">
                       <a
@@ -78,7 +79,7 @@ function Layout() {
                     </li>
                   </ul>
                 )}
-                {!user && (
+                {auth === AuthorizationStatus.NoAuth && (
                   <ul className="header__nav-list">
                     <li className="header__nav-item user">
                       <Link

@@ -2,6 +2,7 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { TOffer } from '../types/offer';
 import { AxiosInstance } from 'axios';
 import { TUser } from '../types/user';
+import { tokenHelper } from '../helpers';
 
 export const loadOffersList = createAsyncThunk<
   TOffer[],
@@ -27,13 +28,17 @@ export const login = createAsyncThunk<
   { extra: AxiosInstance }
 >('user/login', async ({ email, password }, { extra: api }) => {
   const response = await api.post<TUser>('/login', { email, password });
+  tokenHelper.save(response.data.token);
   return response.data;
 });
 
 export const logout = createAsyncThunk<
   void,
-  undefined,
+  { intercepted?: boolean } | undefined,
   { extra: AxiosInstance }
->('user/logout', async (_, { extra: api }) => {
-  await api.delete('/logout');
+>('user/logout', async ({ intercepted } = {}, { extra: api }) => {
+  if (!intercepted) {
+    await api.delete('/logout');
+  }
+  tokenHelper.purge();
 });
