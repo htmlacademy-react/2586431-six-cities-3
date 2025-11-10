@@ -3,7 +3,7 @@ import Map from '../../components/map/map';
 import { OffersList } from '../../components/offers-list/offers-list';
 import { useOffersList as useOffersList } from '../../store/hooks';
 import { changeCity } from '../../store/actions';
-import { loadOffersList } from '../../store/api-actions';
+import { fetchOffersList } from '../../store/api-actions';
 import { store } from '../../store';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
@@ -38,7 +38,7 @@ function MainPage(): JSX.Element {
   const isLoading = useSelector((state: State) => state.offersListLoading);
 
   useEffect(() => {
-    store.dispatch(loadOffersList());
+    store.dispatch(fetchOffersList());
   }, []);
 
   const handleOfferHover = (offerId: string | null) => {

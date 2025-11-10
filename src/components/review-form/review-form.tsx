@@ -1,25 +1,37 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { RatingStar, TRatingValue } from '../rating-star/rating-star';
+import { useSelector } from 'react-redux';
+import { State } from '../../types/state';
+import { store } from '../../store';
+import { postReview } from '../../store/api-actions';
 
 const RATING_VALUES: TRatingValue[] = [5, 4, 3, 2, 1];
 
 const DEFAULT_FORM_DATA = {
-  review: '',
+  comment: '',
 } as TFormData;
 
 type TFormData = {
   rating: TRatingValue;
-  review: string;
+  comment: string;
 };
 
-export function ReviewForm(): JSX.Element {
+export function ReviewForm({ offerId }: { offerId: string }): JSX.Element {
   const [formData, setFormData] = useState<TFormData>(DEFAULT_FORM_DATA);
-
+  const postReviewLoading = useSelector(
+    (state: State) => state.postReviewLoading
+  );
   const submit = () => {
-    // eslint-disable-next-line no-console
-    console.log(formData);
+    store.dispatch(postReview({ offerId, ...formData }));
     setFormData(DEFAULT_FORM_DATA);
   };
+  const isValid = useMemo(
+    () =>
+      formData.comment.length >= 50 &&
+      formData.comment.length <= 300 &&
+      formData.rating > 0,
+    [formData]
+  );
 
   return (
     <form
@@ -48,9 +60,12 @@ export function ReviewForm(): JSX.Element {
         name="review"
         placeholder="Tell how was your stay, what you like and what can be improved"
         defaultValue={''}
-        value={formData.review}
+        value={formData.comment}
+        minLength={50}
+        maxLength={300}
+        required
         onChange={(evt) => {
-          setFormData({ ...formData, review: evt.target.value });
+          setFormData({ ...formData, comment: evt.target.value });
         }}
       />
       <div className="reviews__button-wrapper">
@@ -62,7 +77,7 @@ export function ReviewForm(): JSX.Element {
         <button
           className="reviews__submit form__submit button"
           type="submit"
-          disabled={false}
+          disabled={postReviewLoading || !isValid}
         >
           Submit
         </button>
