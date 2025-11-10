@@ -1,3 +1,5 @@
+import { TUser } from './user';
+
 export type TLocation = {
   latitude: number;
   longitude: number;
@@ -20,4 +22,13 @@ export type TOffer = {
   isPremium: boolean;
   rating: number;
   previewImage: string;
+};
+
+export type TOfferDetails = Omit<TOffer, 'previewImage'> & {
+  description: string;
+  bedrooms: number;
+  goods: string[];
+  host: TUser;
+  images: string[];
+  maxAdults: number;
 };

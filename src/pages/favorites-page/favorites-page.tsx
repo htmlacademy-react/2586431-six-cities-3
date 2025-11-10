@@ -4,13 +4,13 @@ import { TOffer } from '../../types/offer';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
 import { store } from '../../store';
-import { loadOffersList } from '../../store/api-actions';
+import { fetchOffersList } from '../../store/api-actions';
 
 function FavoritesPage(): JSX.Element {
   // пока у нас нет отдельных favoriteOffersList
   const offers = useSelector((state: State) => state.offersList);
   useEffect(() => {
-    store.dispatch(loadOffersList());
+    store.dispatch(fetchOffersList());
   }, []);
 
   const groupedOffers = useMemo(() => {

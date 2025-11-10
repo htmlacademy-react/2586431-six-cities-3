@@ -1,15 +1,55 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { TOffer } from '../types/offer';
+import { TOffer, TOfferDetails } from '../types/offer';
 import { AxiosInstance } from 'axios';
 import { TUser } from '../types/user';
 import { tokenHelper } from '../helpers';
+import { TReview } from '../types/review';
 
-export const loadOffersList = createAsyncThunk<
+export const fetchOffersList = createAsyncThunk<
   TOffer[],
   undefined,
   { extra: AxiosInstance }
 >('offers/load', async (_, { extra: api }) => {
   const response = await api.get<TOffer[]>('/offers');
+  return response.data;
+});
+
+export const fetchOfferById = createAsyncThunk<
+  TOfferDetails,
+  string,
+  { extra: AxiosInstance }
+>('offers/fetchById', async (id, { extra: api }) => {
+  const response = await api.get<TOfferDetails>(`/offers/${id}`);
+  return response.data;
+});
+
+export const fetchOffersNearby = createAsyncThunk<
+  TOffer[],
+  string,
+  { extra: AxiosInstance }
+>('offers/fetchNearby', async (id, { extra: api }) => {
+  const response = await api.get<TOffer[]>(`/offers/${id}/nearby`);
+  return response.data;
+});
+
+export const fetchReviews = createAsyncThunk<
+  TReview[],
+  string,
+  { extra: AxiosInstance }
+>('reviews/fetch', async (offerId, { extra: api }) => {
+  const response = await api.get<TReview[]>(`/comments/${offerId}`);
+  return response.data;
+});
+
+export const postReview = createAsyncThunk<
+  TReview,
+  { offerId: string; comment: string; rating: number },
+  { extra: AxiosInstance }
+>('reviews/post', async ({ offerId, comment, rating }, { extra: api }) => {
+  const response = await api.post<TReview>(`/comments/${offerId}`, {
+    comment,
+    rating,
+  });
   return response.data;
 });
 
