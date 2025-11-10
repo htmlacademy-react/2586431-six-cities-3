@@ -1,15 +1,20 @@
 import { MainPage } from '../pages/main-page/main-page';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../constants';
+import { AppRoute } from '../constants';
 import { LoginPage } from '../pages/login-page/login-page';
 import { FavoritesPage } from '../pages/favorites-page/favorites-page';
 import { OfferPage } from '../pages/offer-page/offer-page';
 import { NotFoundPage } from '../pages/404-page/404-page';
 import PrivateRoute from '../components/private-route/private-route';
 import Layout from '../components/layout/layout';
+import { useEffect } from 'react';
+import { checkAuth } from '../store/api-actions';
+import { store } from '../store';
 
 function App(): JSX.Element {
-  const authorizationStatus = AuthorizationStatus.Auth;
+  useEffect(() => {
+    store.dispatch(checkAuth());
+  }, []);
   return (
     <BrowserRouter>
       <Routes>
@@ -20,10 +25,7 @@ function App(): JSX.Element {
           <Route
             path={AppRoute.Favorites}
             element={
-              <PrivateRoute
-                accessGranted={authorizationStatus === AuthorizationStatus.Auth}
-                redirectTo={AppRoute.Login}
-              >
+              <PrivateRoute>
                 <FavoritesPage />
               </PrivateRoute>
             }

@@ -88,3 +88,5 @@ export const SORTING_OPTIONS: TSortingOption[] = [
 ];
 
 export const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities';
+
+export const AUTH_TOKEN_KEY = 'six-cities-auth-token';
