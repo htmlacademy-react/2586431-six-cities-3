@@ -2,38 +2,48 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { logout } from '../../store/api-actions';
-import { store } from '../../store';
+import { store, authActions } from '../../store';
+import { useMemo } from 'react';
 
-const getLayoutState = (pathname: AppRoute) => {
-  let rootClassName = '';
-  let linkClassName = '';
-  let shouldRenderUser = true;
+const useLayoutState = () => {
+  const { pathname } = useLocation();
 
-  if (pathname === AppRoute.Root) {
-    rootClassName = 'page--gray page--main';
-    linkClassName = 'header__logo-link header__logo-link--active';
-  } else if (pathname === AppRoute.Login) {
-    rootClassName = 'page page--login';
-    linkClassName = 'header__logo-link';
-    shouldRenderUser = false;
-  } else if (pathname === AppRoute.Favorites) {
-    rootClassName = 'page--gray page--favorites';
-    shouldRenderUser = false;
-  }
-  return { rootClassName, linkClassName, shouldRenderUser };
+  return useMemo(() => {
+    switch (pathname) {
+      case AppRoute.Root:
+        return {
+          rootClassName: 'page--gray page--main',
+          linkClassName: 'header__logo-link header__logo-link--active',
+          shouldRenderUser: true,
+        };
+      case AppRoute.Login:
+        return {
+          rootClassName: 'page page--login',
+          linkClassName: 'header__logo-link',
+          shouldRenderUser: false,
+        };
+      case AppRoute.Favorites:
+        return {
+          rootClassName: 'page--gray page--favorites',
+          shouldRenderUser: false,
+        };
+      default:
+        return {
+          rootClassName: '',
+          linkClassName: '',
+          shouldRenderUser: true,
+        };
+    }
+  }, [pathname]);
 };
 
 function Layout() {
-  const { pathname } = useLocation();
   const navigate = useNavigate();
-  const { rootClassName, linkClassName, shouldRenderUser } = getLayoutState(
-    pathname as AppRoute
-  );
-  const user = useSelector((state: State) => state.user);
-  const auth = useSelector((state: State) => state.authorizationStatus);
+  const { rootClassName, linkClassName, shouldRenderUser } = useLayoutState();
+  const user = useSelector((state: State) => state.auth.user);
+  const auth = useSelector((state: State) => state.auth.status);
   const handleLogout = () => {
-    store.dispatch(logout()).then(() => {
+    store.dispatch(authActions.logout()).then(() => {
       navigate(AppRoute.Root);
     });
   };

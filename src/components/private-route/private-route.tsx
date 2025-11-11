@@ -13,7 +13,7 @@ type PrivateRouteProps = {
 function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const { children, redirectTo = AppRoute.Login } = props;
   const accessGranted = useSelector(
-    (state: State) => state.authorizationStatus === AuthorizationStatus.Auth
+    (state: State) => state.auth.status === AuthorizationStatus.Auth
   );
 
   return accessGranted ? children : <Navigate to={redirectTo} />;

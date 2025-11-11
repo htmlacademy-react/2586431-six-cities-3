@@ -2,14 +2,13 @@ import { useMemo, useState } from 'react';
 import { SORTING_OPTIONS, USortingOptionValue } from '../../constants';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { changeSort } from '../../store/actions';
-import { store } from '../../store';
+import { store, filtersActions } from '../../store';
 
 export const SortingOptions = () => {
   const [open, setOpen] = useState(false);
-  const sort = useSelector((state: State) => state.sort);
+  const sort = useSelector((state: State) => state.filters.sort);
   const handleOptionClick = (optionValue: USortingOptionValue) => {
-    store.dispatch(changeSort(optionValue));
+    store.dispatch(filtersActions.changeSort(optionValue));
     setOpen(false);
   };
 

@@ -1,16 +1,13 @@
 import { useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../constants';
-import { store } from '../../store';
-import { login } from '../../store/api-actions';
+import { store, authActions } from '../../store';
 import { State } from '../../types/state';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
 
 export function LoginPage(): JSX.Element {
   const navigate = useNavigate();
-  const authorizationStatus = useSelector(
-    (state: State) => state.authorizationStatus
-  );
+  const authorizationStatus = useSelector((state: State) => state.auth.status);
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
@@ -23,7 +20,7 @@ export function LoginPage(): JSX.Element {
     const formData = new FormData(event.target as HTMLFormElement);
     const email = formData.get('email') as string;
     const password = formData.get('password') as string;
-    store.dispatch(login({ email, password }));
+    store.dispatch(authActions.login({ email, password }));
   };
   return (
     <div className="page">

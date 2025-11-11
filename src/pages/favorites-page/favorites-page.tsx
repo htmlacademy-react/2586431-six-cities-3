@@ -3,14 +3,13 @@ import { FavoritesLocation } from '../../components/favorites-location/favorites
 import { TOffer } from '../../types/offer';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { store } from '../../store';
-import { fetchOffersList } from '../../store/api-actions';
+import { store, offersActions } from '../../store';
 
 function FavoritesPage(): JSX.Element {
   // пока у нас нет отдельных favoriteOffersList
-  const offers = useSelector((state: State) => state.offersList);
+  const offers = useSelector((state: State) => state.offers.list);
   useEffect(() => {
-    store.dispatch(fetchOffersList());
+    store.dispatch(offersActions.fetchList());
   }, []);
 
   const groupedOffers = useMemo(() => {

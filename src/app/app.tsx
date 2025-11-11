@@ -8,12 +8,11 @@ import { NotFoundPage } from '../pages/404-page/404-page';
 import PrivateRoute from '../components/private-route/private-route';
 import Layout from '../components/layout/layout';
 import { useEffect } from 'react';
-import { checkAuth } from '../store/api-actions';
-import { store } from '../store';
+import { store, authActions } from '../store';
 
 function App(): JSX.Element {
   useEffect(() => {
-    store.dispatch(checkAuth());
+    store.dispatch(authActions.checkAuth());
   }, []);
   return (
     <BrowserRouter>
