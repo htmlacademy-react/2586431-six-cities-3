@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { RatingStar, TRatingValue } from '../rating-star/rating-star';
+import { RatingStar, TRatingValue } from '../rating-star';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
 import { store, reviewsActions } from '../../store';

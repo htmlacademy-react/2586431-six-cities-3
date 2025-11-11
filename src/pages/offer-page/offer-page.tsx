@@ -1,15 +1,15 @@
-import { ReviewForm } from '../../components/review-form/review-form';
-import { ReviewsList } from '../../components/reviews-list/reviews-list';
-import Map from '../../components/map/map';
-import { OffersList } from '../../components/offers-list/offers-list';
+import { ReviewForm } from '../../components/review-form';
+import { ReviewsList } from '../../components/reviews-list';
+import Map from '../../components/map';
+import { OffersList } from '../../components/offers-list';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
 import { offerDetailsActions, offersActions } from '../../store';
 import { store } from '../../store';
-import { Spinner } from '../../components/spinner/spinner';
-import { NotFoundPage } from '../404-page/404-page';
+import { Spinner } from '../../components/spinner';
+import { NotFoundPage } from '../404-page';
 import { AuthorizationStatus } from '../../constants';
 
 type OfferPageParams = { id: string };

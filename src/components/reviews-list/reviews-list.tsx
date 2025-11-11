@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux';
-import { ReviewsItem } from '../reviews-item/reviews-item';
+import { ReviewsItem } from '../reviews-item';
 import { State } from '../../types/state';
 import { useEffect, useMemo } from 'react';
 import { store, reviewsActions } from '../../store';
-import { Spinner } from '../spinner/spinner';
+import { Spinner } from '../spinner';
 import { MAX_REVIEWS_COUNT } from '../../constants';
 
 export function ReviewsList({ offerId }: { offerId: string }): JSX.Element {

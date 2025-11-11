@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import Map from '../../components/map/map';
-import { OffersList } from '../../components/offers-list/offers-list';
+import Map from '../../components/map';
+import { OffersList } from '../../components/offers-list';
 import {
   store,
   filtersActions,
@@ -10,8 +10,8 @@ import {
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
 import { CITIES, CITY_CENTER_LOCATIONS } from '../../constants';
-import { SortingOptions } from '../../components/sorting-options/sorting-options';
-import { Spinner } from '../../components/spinner/spinner';
+import { SortingOptions } from '../../components/sorting-options';
+import { Spinner } from '../../components/spinner';
 
 const CityItem = ({ city }: { city: string }) => {
   const isActive = useSelector((state: State) => state.filters.city === city);

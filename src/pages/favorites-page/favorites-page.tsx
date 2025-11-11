@@ -1,5 +1,5 @@
 import { useEffect, useMemo } from 'react';
-import { FavoritesLocation } from '../../components/favorites-location/favorites-location';
+import { FavoritesLocation } from '../../components/favorites-location';
 import { TOffer } from '../../types/offer';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
