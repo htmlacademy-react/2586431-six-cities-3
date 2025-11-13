@@ -1,19 +1,28 @@
 import { useNavigate } from 'react-router-dom';
-import { AppRoute, AuthorizationStatus } from '../../constants';
-import { store, authActions } from '../../store';
+import { AppRoute, AuthorizationStatus, CITIES } from '../../constants';
+import { store, authActions, filtersActions } from '../../store';
 import { State } from '../../types/state';
 import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 
 export function LoginPage(): JSX.Element {
   const navigate = useNavigate();
   const authorizationStatus = useSelector((state: State) => state.auth.status);
+  const randomCity = useMemo(
+    () => CITIES[Math.floor(Math.random() * CITIES.length)],
+    []
+  );
 
   useEffect(() => {
     if (authorizationStatus === AuthorizationStatus.Auth) {
       navigate(AppRoute.Root);
     }
   }, [authorizationStatus, navigate]);
+
+  const goToRandomCity = () => {
+    store.dispatch(filtersActions.changeCity(randomCity));
+    navigate(AppRoute.Root);
+  };
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -66,8 +75,13 @@ export function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
-                <span>Amsterdam</span>
+              <a
+                className="locations__item-link"
+                href="#"
+                onClick={goToRandomCity}
+                data-testid="random-city-link"
+              >
+                <span>{randomCity}</span>
               </a>
             </div>
           </section>

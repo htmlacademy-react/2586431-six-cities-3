@@ -7,18 +7,23 @@ import { ReviewForm } from '../review-form';
 import { State } from '../../../types/state';
 import { store } from '../../../store';
 
+const mocks = vi.hoisted(() => ({
+  dispatch: vi.fn(() => ({ unwrap: () => Promise.resolve() })),
+}));
+
 vi.mock('../../../store', async () => {
   const actual = await vi.importActual<typeof import('../../../store')>(
     '../../../store'
   );
-  const mockDispatch = vi.fn();
   return {
     ...actual,
     store: {
-      dispatch: mockDispatch,
+      dispatch: mocks.dispatch,
     },
   };
 });
+
+const dispatchRejected = () => ({ unwrap: () => Promise.reject() });
 
 describe('ReviewForm', () => {
   const mockStoreCreator = configureMockStore<State>();
@@ -54,7 +59,7 @@ describe('ReviewForm', () => {
   it('should render all rating stars', () => {
     renderWithProviders(<ReviewForm offerId="1" />);
 
-    const ratingInputs = screen.getAllByRole('radio');
+    const ratingInputs = screen.getAllByRole('checkbox');
     expect(ratingInputs).toHaveLength(5);
   });
 
@@ -69,7 +74,7 @@ describe('ReviewForm', () => {
     const user = userEvent.setup();
     renderWithProviders(<ReviewForm offerId="1" />);
 
-    const ratingInputs = screen.getAllByRole('radio');
+    const ratingInputs = screen.getAllByRole('checkbox');
     await user.click(ratingInputs[0]);
 
     const textarea = screen.getByRole('textbox');
@@ -86,7 +91,7 @@ describe('ReviewForm', () => {
     const user = userEvent.setup();
     renderWithProviders(<ReviewForm offerId="1" />);
 
-    const ratingInputs = screen.getAllByRole('radio');
+    const ratingInputs = screen.getAllByRole('checkbox');
     await user.click(ratingInputs[2]);
 
     const textarea = screen.getByRole('textbox');
@@ -113,7 +118,7 @@ describe('ReviewForm', () => {
     const user = userEvent.setup();
     renderWithProviders(<ReviewForm offerId="1" />);
 
-    const ratingInputs = screen.getAllByRole('radio');
+    const ratingInputs = screen.getAllByRole('checkbox');
     await user.click(ratingInputs[0]);
 
     const textarea = screen.getByRole('textbox');
@@ -127,11 +132,11 @@ describe('ReviewForm', () => {
     expect(store.dispatch).toHaveBeenCalled();
   });
 
-  it('should reset form after submission', async () => {
+  it('should reset form after successful submission', async () => {
     const user = userEvent.setup();
     renderWithProviders(<ReviewForm offerId="1" />);
 
-    const ratingInputs = screen.getAllByRole('radio');
+    const ratingInputs = screen.getAllByRole('checkbox');
     const comment =
       'This is a very detailed review with more than fifty characters to meet the minimum requirement.';
     await user.click(ratingInputs[0]);
@@ -141,7 +146,28 @@ describe('ReviewForm', () => {
 
     const submitButton = screen.getByRole('button', { name: 'Submit' });
     await user.click(submitButton);
+
+    expect(store.dispatch).toHaveBeenCalled();
     expect(textarea).toHaveValue('');
+  });
+
+  it('should not reset form after failed submission', async () => {
+    mocks.dispatch.mockImplementationOnce(() => dispatchRejected());
+    const user = userEvent.setup();
+    renderWithProviders(<ReviewForm offerId="1" />);
+
+    const ratingInputs = screen.getAllByRole('checkbox');
+    const comment =
+      'This is a very detailed review with more than fifty characters to meet the minimum requirement.';
+    await user.click(ratingInputs[0]);
+
+    const textarea = screen.getByRole('textbox');
+    await user.type(textarea, comment);
+
+    const submitButton = screen.getByRole('button', { name: 'Submit' });
+    await user.click(submitButton);
+    expect(store.dispatch).toHaveBeenCalledOnce();
+    expect(textarea).toHaveValue(comment);
   });
 
   it('should disable submit button when postNewLoading is true', () => {
@@ -167,7 +193,7 @@ describe('ReviewForm', () => {
     const user = userEvent.setup();
     renderWithProviders(<ReviewForm offerId="1" />);
 
-    const ratingInputs = screen.getAllByRole('radio');
+    const ratingInputs = screen.getAllByRole('checkbox');
     await user.click(ratingInputs[0]);
 
     const textarea = screen.getByRole('textbox');

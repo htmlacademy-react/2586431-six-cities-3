@@ -12,9 +12,15 @@ type TRatingStarProps = {
   value: TRatingValue;
   onChange: (value: TRatingValue) => void;
   rating: TRatingValue;
+  disabled?: boolean;
 };
 
-export const RatingStar = ({ value, onChange, rating }: TRatingStarProps) => (
+export const RatingStar = ({
+  value,
+  onChange,
+  rating,
+  disabled,
+}: TRatingStarProps) => (
   <>
     <input
       className="form__rating-input visually-hidden"
@@ -25,7 +31,8 @@ export const RatingStar = ({ value, onChange, rating }: TRatingStarProps) => (
       }}
       checked={value >= rating}
       id={`${rating}-stars`}
-      type="radio"
+      type="checkbox"
+      disabled={disabled}
     />
     <label
       htmlFor={`${rating}-stars`}

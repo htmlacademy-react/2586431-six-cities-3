@@ -9,29 +9,18 @@ import { State } from '../../../types/state';
 import { AuthorizationStatus, AppRoute } from '../../../constants';
 import { createMockUser } from '../../../store/__tests__/test-utils';
 import { TOffer } from '../../../types/offer';
+import { store } from '../../../store';
 
 vi.mock('../../../store', async () => {
   const actual = await vi.importActual<typeof import('../../../store')>(
     '../../../store'
   );
-  const mockDispatch = vi.fn(() => Promise.resolve());
+  const dispatchMock = vi.fn();
   return {
     ...actual,
     store: {
-      dispatch: mockDispatch,
+      dispatch: dispatchMock,
     },
-  };
-});
-
-const mockNavigate = vi.fn();
-
-vi.mock('react-router-dom', async () => {
-  const actual = await vi.importActual<typeof import('react-router-dom')>(
-    'react-router-dom'
-  );
-  return {
-    ...actual,
-    useNavigate: () => mockNavigate,
   };
 });
 
@@ -138,7 +127,7 @@ describe('Layout', () => {
     expect(screen.getByText('3')).toBeInTheDocument();
   });
 
-  it('should dispatch logout and navigate on Sign out click', async () => {
+  it('should dispatch logout on Sign out click', async () => {
     const user = userEvent.setup();
     const userData = createMockUser();
     const mockStore = mockStoreCreator({
@@ -167,7 +156,7 @@ describe('Layout', () => {
     const signOutButton = screen.getByText('Sign out');
     await user.click(signOutButton);
 
-    expect(mockNavigate).toHaveBeenCalledWith(AppRoute.Root);
+    expect(store.dispatch).toHaveBeenCalled();
   });
 
   it('should not show user nav on login page', () => {

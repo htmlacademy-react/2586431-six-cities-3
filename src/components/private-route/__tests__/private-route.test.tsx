@@ -55,4 +55,28 @@ describe('PrivateRoute', () => {
 
     expect(container.textContent).not.toContain('Protected Content');
   });
+
+  it('should render spinner when authorization status is unknown', () => {
+    const store = mockStoreCreator({
+      auth: {
+        status: AuthorizationStatus.Unknown,
+        authorizationLoading: false,
+        loginLoading: false,
+        user: null,
+      },
+    });
+
+    const { container } = render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <PrivateRoute>
+            <div>Protected Content</div>
+          </PrivateRoute>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(container.querySelector('.spinner-container')).toBeInTheDocument();
+    expect(container.textContent).not.toContain('Protected Content');
+  });
 });
