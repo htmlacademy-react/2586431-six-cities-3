@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { RatingStar, TRatingValue } from '../rating-star';
 
 describe('RatingStar', () => {
@@ -45,5 +46,19 @@ describe('RatingStar', () => {
 
     const input = screen.getByRole('radio');
     expect(input).not.toBeChecked();
+  });
+
+  it('should call onChange when clicked', async () => {
+    const user = userEvent.setup();
+    const onChange = vi.fn();
+    const rating: TRatingValue = 5;
+    const value: TRatingValue = 3;
+
+    render(<RatingStar value={value} onChange={onChange} rating={rating} />);
+
+    const input = screen.getByRole('radio');
+    await user.click(input);
+
+    expect(onChange).toHaveBeenCalledWith(rating);
   });
 });

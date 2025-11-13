@@ -5,26 +5,7 @@ import { State } from '../../types/state';
 import { store, authActions, favoritesActions } from '../../store';
 import { useEffect, useMemo } from 'react';
 import { classNames } from '../../helpers';
-
-const usePageSuffix = () => {
-  const { pathname } = useLocation();
-
-  return useMemo(() => {
-    if (pathname.startsWith(AppRoute.Login)) {
-      return 'login';
-    }
-    if (pathname.startsWith(AppRoute.Favorites)) {
-      return 'favorites';
-    }
-    if (pathname.startsWith(AppRoute.Offer)) {
-      return 'offer';
-    }
-    if (pathname.startsWith(AppRoute.Root)) {
-      return 'index';
-    }
-    return undefined;
-  }, [pathname]);
-};
+import { usePageSuffix } from './hooks';
 
 function Layout() {
   const navigate = useNavigate();
