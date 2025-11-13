@@ -1,27 +1,29 @@
-import { ReviewForm } from '../../components/review-form/review-form';
-import { ReviewsList } from '../../components/reviews-list/reviews-list';
-import Map from '../../components/map/map';
-import { OffersList } from '../../components/offers-list/offers-list';
+import { ReviewForm } from '../../components/review-form';
+import { ReviewsList } from '../../components/reviews-list';
+import Map from '../../components/map';
+import { OffersList } from '../../components/offers-list';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { fetchOfferById, fetchOffersNearby } from '../../store/api-actions';
+import { offerDetailsActions, offersActions } from '../../store';
 import { store } from '../../store';
-import { Spinner } from '../../components/spinner/spinner';
-import { NotFoundPage } from '../404-page/404-page';
+import { Spinner } from '../../components/spinner';
+import { NotFoundPage } from '../404-page';
 import { AuthorizationStatus } from '../../constants';
 
 type OfferPageParams = { id: string };
 
 function OfferPage(): JSX.Element {
   const { id } = useParams<OfferPageParams>();
-  const auth = useSelector((state: State) => state.authorizationStatus);
-  const offer = useSelector((state: State) => state.offerDetails);
-  const offerLoading = useSelector((state: State) => state.offerDetailsLoading);
-  const offersNearby = useSelector((state: State) => state.offersNearby);
+  const auth = useSelector((state: State) => state.auth.status);
+  const offer = useSelector((state: State) => state.offerDetails.current);
+  const offerLoading = useSelector(
+    (state: State) => state.offerDetails.currentLoading
+  );
+  const offersNearby = useSelector((state: State) => state.offers.nearby);
   const offersNearbyLoading = useSelector(
-    (state: State) => state.offersNearbyLoading
+    (state: State) => state.offers.nearbyLoading
   );
 
   useEffect(() => {
@@ -29,8 +31,8 @@ function OfferPage(): JSX.Element {
       // такого быть никогда не должно, но всё же
       return;
     }
-    store.dispatch(fetchOfferById(id));
-    store.dispatch(fetchOffersNearby(id));
+    store.dispatch(offerDetailsActions.fetchById(id));
+    store.dispatch(offersActions.fetchNearby(id));
   }, [id]);
 
   if (offerLoading || offersNearbyLoading) {

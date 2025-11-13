@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react';
-import { RatingStar, TRatingValue } from '../rating-star/rating-star';
+import { RatingStar, TRatingValue } from '../rating-star';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { store } from '../../store';
-import { postReview } from '../../store/api-actions';
+import { store, reviewsActions } from '../../store';
 
 const RATING_VALUES: TRatingValue[] = [5, 4, 3, 2, 1];
 
@@ -19,10 +18,10 @@ type TFormData = {
 export function ReviewForm({ offerId }: { offerId: string }): JSX.Element {
   const [formData, setFormData] = useState<TFormData>(DEFAULT_FORM_DATA);
   const postReviewLoading = useSelector(
-    (state: State) => state.postReviewLoading
+    (state: State) => state.reviews.postNewLoading
   );
   const submit = () => {
-    store.dispatch(postReview({ offerId, ...formData }));
+    store.dispatch(reviewsActions.postNew({ offerId, ...formData }));
     setFormData(DEFAULT_FORM_DATA);
   };
   const isValid = useMemo(

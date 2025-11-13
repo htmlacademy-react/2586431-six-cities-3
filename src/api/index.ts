@@ -1,7 +1,7 @@
 import axios, { HttpStatusCode, isAxiosError } from 'axios';
 import { BASE_URL } from '../constants';
 import { tokenHelper } from '../helpers';
-import { logout } from '../store/api-actions';
+import { authActions } from '../store';
 import { store } from '../store';
 
 export const api = axios.create({
@@ -27,7 +27,7 @@ api.interceptors.response.use(
     }
     const { response } = error;
     if (response?.status === HttpStatusCode.Unauthorized) {
-      store.dispatch(logout({ intercepted: true }));
+      store.dispatch(authActions.logout({ intercepted: true }));
     }
     return Promise.reject(error);
   }

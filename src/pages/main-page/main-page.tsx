@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
-import Map from '../../components/map/map';
-import { OffersList } from '../../components/offers-list/offers-list';
-import { useOffersList as useOffersList } from '../../store/hooks';
-import { changeCity } from '../../store/actions';
-import { fetchOffersList } from '../../store/api-actions';
-import { store } from '../../store';
+import Map from '../../components/map';
+import { OffersList } from '../../components/offers-list';
+import {
+  store,
+  filtersActions,
+  offersActions,
+  useOffersList,
+} from '../../store';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
 import { CITIES, CITY_CENTER_LOCATIONS } from '../../constants';
-import { SortingOptions } from '../../components/sorting-options/sorting-options';
-import { Spinner } from '../../components/spinner/spinner';
+import { SortingOptions } from '../../components/sorting-options';
+import { Spinner } from '../../components/spinner';
 
 const CityItem = ({ city }: { city: string }) => {
-  const isActive = useSelector((state: State) => state.city === city);
+  const isActive = useSelector((state: State) => state.filters.city === city);
   const handleCityChange = () => {
-    store.dispatch(changeCity(city));
+    store.dispatch(filtersActions.changeCity(city));
   };
 
   return (
@@ -34,11 +36,11 @@ const CityItem = ({ city }: { city: string }) => {
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);
   const offers = useOffersList();
-  const city = useSelector((state: State) => state.city);
-  const isLoading = useSelector((state: State) => state.offersListLoading);
+  const city = useSelector((state: State) => state.filters.city);
+  const isLoading = useSelector((state: State) => state.offers.listLoading);
 
   useEffect(() => {
-    store.dispatch(fetchOffersList());
+    store.dispatch(offersActions.fetchList());
   }, []);
 
   const handleOfferHover = (offerId: string | null) => {

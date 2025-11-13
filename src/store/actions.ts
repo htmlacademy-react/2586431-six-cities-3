@@ -1,7 +1,5 @@
-import { createAction } from '@reduxjs/toolkit';
-import { USortingOptionValue } from '../constants';
-
-export const changeCity = createAction<string>('city/change');
-export const changeSort = createAction<USortingOptionValue | undefined>(
-  'sort/change'
-);
+export { filtersActions } from './filters';
+export { offersActions } from './offers';
+export { reviewsActions } from './reviews';
+export { offerDetailsActions } from './offer-details';
+export { authActions } from './auth';

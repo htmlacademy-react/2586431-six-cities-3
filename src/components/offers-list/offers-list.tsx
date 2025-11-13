@@ -1,6 +1,5 @@
-import { PlaceCard } from '../place-card/place-card';
+import { PlaceCard } from '../place-card';
 import { TOffer } from '../../types/offer';
-import { useState } from 'react';
 
 type OffersListProps = {
   offers: TOffer[];
@@ -13,13 +12,6 @@ export function OffersList({
   onOfferHover,
   viewMode = 'cities',
 }: OffersListProps): JSX.Element {
-  const [, setActiveOfferId] = useState<string | null>(null);
-
-  const handleOfferHover = (offerId: string | null) => {
-    setActiveOfferId(offerId);
-    onOfferHover?.(offerId);
-  };
-
   return (
     <div
       className={`${
@@ -31,8 +23,8 @@ export function OffersList({
           viewMode={viewMode}
           key={offer.id}
           offer={offer}
-          onMouseEnter={() => handleOfferHover(offer.id)}
-          onMouseLeave={() => handleOfferHover(null)}
+          onMouseEnter={() => onOfferHover?.(offer.id)}
+          onMouseLeave={() => onOfferHover?.(null)}
         />
       ))}
     </div>
