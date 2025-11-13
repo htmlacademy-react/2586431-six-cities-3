@@ -6,7 +6,11 @@ import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { offerDetailsActions, offersActions } from '../../store';
+import {
+  favoritesActions,
+  offerDetailsActions,
+  offersActions,
+} from '../../store';
 import { store } from '../../store';
 import { Spinner } from '../../components/spinner';
 import { NotFoundPage } from '../404-page';
@@ -16,7 +20,7 @@ type OfferPageParams = { id: string };
 
 function OfferPage(): JSX.Element {
   const { id } = useParams<OfferPageParams>();
-  const auth = useSelector((state: State) => state.auth.status);
+  const authorizationStatus = useSelector((state: State) => state.auth.status);
   const offer = useSelector((state: State) => state.offerDetails.current);
   const offerLoading = useSelector(
     (state: State) => state.offerDetails.currentLoading
@@ -42,6 +46,15 @@ function OfferPage(): JSX.Element {
   if (!offer) {
     return <NotFoundPage />;
   }
+
+  const handleBookmarkClick = () => {
+    store.dispatch(
+      favoritesActions.setStatus({
+        offerId: offer.id,
+        isFavorite: !offer.isFavorite,
+      })
+    );
+  };
 
   return (
     <div className="page">
@@ -70,12 +83,26 @@ function OfferPage(): JSX.Element {
               </div>
               <div className="offer__name-wrapper">
                 <h1 className="offer__name">{offer.title}</h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width={31} height={33}>
-                    <use xlinkHref="#icon-bookmark" />
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                {authorizationStatus === AuthorizationStatus.Auth && (
+                  <button
+                    className={`offer__bookmark-button button ${
+                      offer.isFavorite ? 'offer__bookmark-button--active' : ''
+                    }`}
+                    type="button"
+                    onClick={handleBookmarkClick}
+                  >
+                    <svg
+                      className="offer__bookmark-icon"
+                      width={31}
+                      height={33}
+                    >
+                      <use xlinkHref="#icon-bookmark" />
+                    </svg>
+                    <span className="visually-hidden">
+                      {offer.isFavorite ? 'In bookmarks' : 'To bookmarks'}
+                    </span>
+                  </button>
+                )}
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">
@@ -137,7 +164,7 @@ function OfferPage(): JSX.Element {
               </div>
               <section className="offer__reviews reviews">
                 <ReviewsList offerId={offer.id} />
-                {auth === AuthorizationStatus.Auth && (
+                {authorizationStatus === AuthorizationStatus.Auth && (
                   <ReviewForm offerId={offer.id} />
                 )}
               </section>

@@ -4,6 +4,7 @@ import { filtersSlice } from './filters';
 import { offerDetailsSlice } from './offer-details';
 import { reviewsSlice } from './reviews';
 import { authSlice } from './auth';
+import { favoritesSlice } from './favorites';
 
 export const rootReducer = combineReducers({
   filters: filtersSlice.reducer,
@@ -11,4 +12,5 @@ export const rootReducer = combineReducers({
   offerDetails: offerDetailsSlice.reducer,
   reviews: reviewsSlice.reducer,
   auth: authSlice.reducer,
+  favorites: favoritesSlice.reducer,
 });
