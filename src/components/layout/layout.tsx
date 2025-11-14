@@ -2,60 +2,73 @@ import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
-import { store, authActions } from '../../store';
-import { useMemo } from 'react';
+import { store, authActions, favoritesActions } from '../../store';
+import { useEffect, useMemo } from 'react';
+import { classNames } from '../../helpers';
 
-const useLayoutState = () => {
+const usePageSuffix = () => {
   const { pathname } = useLocation();
 
   return useMemo(() => {
-    switch (pathname) {
-      case AppRoute.Root:
-        return {
-          rootClassName: 'page--gray page--main',
-          linkClassName: 'header__logo-link header__logo-link--active',
-          shouldRenderUser: true,
-        };
-      case AppRoute.Login:
-        return {
-          rootClassName: 'page page--login',
-          linkClassName: 'header__logo-link',
-          shouldRenderUser: false,
-        };
-      case AppRoute.Favorites:
-        return {
-          rootClassName: 'page--gray page--favorites',
-          shouldRenderUser: false,
-        };
-      default:
-        return {
-          rootClassName: '',
-          linkClassName: '',
-          shouldRenderUser: true,
-        };
+    if (pathname.startsWith(AppRoute.Login)) {
+      return 'login';
     }
+    if (pathname.startsWith(AppRoute.Favorites)) {
+      return 'favorites';
+    }
+    if (pathname.startsWith(AppRoute.Offer)) {
+      return 'offer';
+    }
+    if (pathname.startsWith(AppRoute.Root)) {
+      return 'index';
+    }
+    return undefined;
   }, [pathname]);
 };
 
 function Layout() {
   const navigate = useNavigate();
-  const { rootClassName, linkClassName, shouldRenderUser } = useLayoutState();
+  const { pathname } = useLocation();
+  const pageSuffix = usePageSuffix();
+
+  const showUser = useMemo(
+    () => !pathname.startsWith(AppRoute.Login),
+    [pathname]
+  );
   const user = useSelector((state: State) => state.auth.user);
   const auth = useSelector((state: State) => state.auth.status);
+  const favoritesCount = useSelector(
+    (state: State) => state.favorites.list?.length ?? 0
+  );
+  useEffect(() => {
+    // грузим только для авторизованных пользователей
+    if (auth !== AuthorizationStatus.Auth) {
+      return;
+    }
+    store.dispatch(favoritesActions.fetchList());
+  }, [auth]);
   const handleLogout = () => {
     store.dispatch(authActions.logout()).then(() => {
       navigate(AppRoute.Root);
     });
   };
   return (
-    <div className={`page${rootClassName}`}>
+    <div
+      className={classNames('page', {
+        'page--gray page--login': pageSuffix === 'login',
+        'page--favorites-empty':
+          pageSuffix === 'favorites' && favoritesCount === 0,
+      })}
+    >
       <header className="header">
         <div className="container">
           <div className="header__wrapper">
             <div className="header__left">
               <Link
                 to={AppRoute.Root}
-                className={`header__logo-link${linkClassName}`}
+                className={classNames('header__logo-link', {
+                  'header__logo-link--active': pageSuffix === 'index',
+                })}
               >
                 <img
                   className="header__logo"
@@ -66,7 +79,7 @@ function Layout() {
                 />
               </Link>
             </div>
-            {shouldRenderUser ? (
+            {showUser ? (
               <nav className="header__nav">
                 {auth === AuthorizationStatus.Auth && user && (
                   <ul className="header__nav-list">
@@ -76,10 +89,14 @@ function Layout() {
                         href="#"
                       >
                         <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                        <span className="header__user-name user__name">
-                          {user.email}
-                        </span>
-                        <span className="header__favorite-count">3</span>
+                        <Link to={AppRoute.Favorites}>
+                          <span className="header__user-name user__name">
+                            {user.email}
+                          </span>
+                          <span className="header__favorite-count">
+                            {favoritesCount}
+                          </span>
+                        </Link>
                       </a>
                     </li>
                     <li className="header__nav-item">
@@ -109,7 +126,13 @@ function Layout() {
           </div>
         </div>
       </header>
-      <Outlet />
+      <main
+        className={classNames('page__main', {
+          [`page__main--${pageSuffix}`]: !!pageSuffix,
+        })}
+      >
+        <Outlet />
+      </main>
     </div>
   );
 }

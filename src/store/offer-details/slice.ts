@@ -1,6 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { TOfferDetailsState } from './types';
 import { fetchById } from './actions';
+import { setStatus } from '../favorites/actions';
 
 const initialState: TOfferDetailsState = {
   current: null,
@@ -23,6 +24,13 @@ const offerDetailsSlice = createSlice({
     builder.addCase(fetchById.rejected, (state) => {
       state.currentLoading = false;
       state.current = null;
+    });
+
+    // обновляем текущий оффер, если он изменился
+    builder.addCase(setStatus.fulfilled, (state, action) => {
+      if (state.current && state.current.id === action.meta.arg.offerId) {
+        state.current.isFavorite = action.payload.isFavorite;
+      }
     });
   },
 });
