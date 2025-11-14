@@ -216,7 +216,7 @@ describe('LoginPage', () => {
     );
 
     const randomCityLink = screen.getByTestId('random-city-link');
-    const randomCity = randomCityLink.textContent;
+    const randomCity = randomCityLink.textContent ?? '';
     await user.click(randomCityLink);
 
     expect(mockNavigate).toHaveBeenCalledWith(AppRoute.Root);
