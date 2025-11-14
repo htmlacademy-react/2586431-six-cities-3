@@ -28,12 +28,10 @@ const favoritesSlice = createSlice({
     // setStatus
     builder.addCase(setStatus.fulfilled, (state, action) => {
       state.setStatusLoading = false;
-      // если список ещё не загружался, то ничего не делаем дальше
       if (!state.list) {
         return;
       }
       if (action.meta.arg.isFavorite) {
-        // на всякий случай, чтобы не было дубликатов
         if (state.list.some((offer) => offer.id === action.payload.id)) {
           return;
         }

@@ -26,7 +26,6 @@ const offerDetailsSlice = createSlice({
       state.current = null;
     });
 
-    // обновляем текущий оффер, если он изменился
     builder.addCase(setStatus.fulfilled, (state, action) => {
       if (state.current && state.current.id === action.meta.arg.offerId) {
         state.current.isFavorite = action.payload.isFavorite;

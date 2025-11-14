@@ -1,0 +1,4 @@
+export const FAVORITES_IMAGE_WIDTH = 150;
+export const FAVORITES_IMAGE_HEIGHT = 110;
+export const CITIES_IMAGE_WIDTH = 260;
+export const CITIES_IMAGE_HEIGHT = 200;

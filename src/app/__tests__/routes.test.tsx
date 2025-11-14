@@ -120,8 +120,6 @@ describe('AppRoutes', () => {
       </Provider>
     );
 
-    // OfferPage может показать NotFoundPage если offer не найден, но это нормально
-    // Главное - проверить, что маршрут обрабатывается (не главная страница)
     expect(screen.queryByText('Cities')).not.toBeInTheDocument();
     expect(
       screen.queryByRole('heading', { name: 'Sign in' })

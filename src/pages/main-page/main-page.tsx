@@ -1,38 +1,14 @@
 import { useState, useEffect } from 'react';
 import Map from '../../components/map';
 import { OffersList } from '../../components/offers-list';
-import {
-  store,
-  filtersActions,
-  offersActions,
-  useOffersList,
-} from '../../store';
+import { store, offersActions, useOffersList } from '../../store';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
 import { CITIES, CITY_CENTER_LOCATIONS } from '../../constants';
 import { SortingOptions } from '../../components/sorting-options';
 import { Spinner } from '../../components/spinner';
 import { NoOffers } from '../../components/no-offers';
-
-const CityItem = ({ city }: { city: string }) => {
-  const isActive = useSelector((state: State) => state.filters.city === city);
-  const handleCityChange = () => {
-    store.dispatch(filtersActions.changeCity(city));
-  };
-
-  return (
-    <li className="locations__item">
-      <a
-        className={`locations__item-link tabs__item ${
-          isActive ? 'tabs__item--active' : ''
-        }`}
-        onClick={handleCityChange}
-      >
-        <span>{city}</span>
-      </a>
-    </li>
-  );
-};
+import CityItem from './city-item';
 
 function MainPage(): JSX.Element {
   const [activeOfferId, setActiveOfferId] = useState<string | null>(null);

@@ -75,14 +75,15 @@ export function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a
+              <span
                 className="locations__item-link"
-                href="#"
                 onClick={goToRandomCity}
+                role="button"
+                tabIndex={0}
                 data-testid="random-city-link"
               >
                 <span>{randomCity}</span>
-              </a>
+              </span>
             </div>
           </section>
         </div>

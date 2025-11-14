@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import './404-page.css';
+import { AppRoute } from '../../constants';
 
 export function NotFoundPage(): JSX.Element {
   return (
@@ -12,7 +13,7 @@ export function NotFoundPage(): JSX.Element {
             <p className="not-found__description">
               The page you are looking for doesn&apos;t exist or has been moved.
             </p>
-            <Link to="/" className="not-found__link button">
+            <Link to={AppRoute.Root} className="not-found__link button">
               Go to main page
             </Link>
           </section>
