@@ -11,7 +11,7 @@ export function ReviewsList({ offerId }: { offerId: string }): JSX.Element {
   const reviewsSlice = useMemo(
     () =>
       reviews
-        ?.toSorted((a, b) => (a.date > b.date ? -1 : 1))
+        ?.sort((a, b) => (a.date > b.date ? -1 : 1))
         .slice(0, MAX_REVIEWS_COUNT) ?? [],
     [reviews]
   );
