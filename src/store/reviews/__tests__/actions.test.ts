@@ -4,7 +4,11 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 import { Action } from 'redux';
-import { AppThunkDispatch, extractActionsTypes, createMockReview } from '../../__tests__/test-utils';
+import {
+  AppThunkDispatch,
+  extractActionsTypes,
+  createMockReview,
+} from '../../__tests__/test-utils';
 import { State } from '../../../types/state';
 import { fetchList, postNew } from '../actions';
 import { BASE_URL } from '../../../constants';
@@ -15,15 +19,19 @@ describe('Async actions', () => {
   });
   const mockAxiosAdapter = new MockAdapter(axiosInstance);
   const middleware = [thunk.withExtraArgument(axiosInstance)];
-  const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middleware);
+  const mockStoreCreator = configureMockStore<
+    State,
+    Action<string>,
+    AppThunkDispatch
+  >(middleware);
   let store: ReturnType<typeof mockStoreCreator>;
 
   beforeEach(() => {
     store = mockStoreCreator({
       reviews: {
         list: [],
-        loading: false,
-        posting: false,
+        listLoading: false,
+        postNewLoading: false,
       },
     });
     mockAxiosAdapter.reset();
@@ -31,7 +39,10 @@ describe('Async actions', () => {
 
   describe('fetchList', () => {
     it('should dispatch "fetchList.pending" and "fetchList.fulfilled" when server response 200', async () => {
-      const mockReviews = [createMockReview({ id: '1' }), createMockReview({ id: '2' })];
+      const mockReviews = [
+        createMockReview({ id: '1' }),
+        createMockReview({ id: '2' }),
+      ];
       const offerId = '1';
       mockAxiosAdapter.onGet(`/comments/${offerId}`).reply(200, mockReviews);
 
@@ -39,7 +50,9 @@ describe('Async actions', () => {
 
       const emittedActions = store.getActions();
       const extractedActionsTypes = extractActionsTypes(emittedActions);
-      const fetchListFulfilled = emittedActions.at(1) as ReturnType<typeof fetchList.fulfilled>;
+      const fetchListFulfilled = emittedActions.at(1) as ReturnType<
+        typeof fetchList.fulfilled
+      >;
 
       expect(extractedActionsTypes).toEqual([
         fetchList.pending.type,
@@ -74,7 +87,9 @@ describe('Async actions', () => {
 
       const emittedActions = store.getActions();
       const extractedActionsTypes = extractActionsTypes(emittedActions);
-      const postNewFulfilled = emittedActions.at(1) as ReturnType<typeof postNew.fulfilled>;
+      const postNewFulfilled = emittedActions.at(1) as ReturnType<
+        typeof postNew.fulfilled
+      >;
 
       expect(extractedActionsTypes).toEqual([
         postNew.pending.type,
@@ -92,11 +107,7 @@ describe('Async actions', () => {
       await (store.dispatch(postNew(commentData)) as Promise<unknown>);
       const actions = extractActionsTypes(store.getActions());
 
-      expect(actions).toEqual([
-        postNew.pending.type,
-        postNew.rejected.type,
-      ]);
+      expect(actions).toEqual([postNew.pending.type, postNew.rejected.type]);
     });
   });
 });
-

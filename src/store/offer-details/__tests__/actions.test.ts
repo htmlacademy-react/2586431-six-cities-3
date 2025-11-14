@@ -4,7 +4,11 @@ import axios from 'axios';
 import MockAdapter from 'axios-mock-adapter';
 import thunk from 'redux-thunk';
 import { Action } from 'redux';
-import { AppThunkDispatch, extractActionsTypes, createMockOfferDetails } from '../../__tests__/test-utils';
+import {
+  AppThunkDispatch,
+  extractActionsTypes,
+  createMockOfferDetails,
+} from '../../__tests__/test-utils';
 import { State } from '../../../types/state';
 import { fetchById } from '../actions';
 import { BASE_URL } from '../../../constants';
@@ -15,14 +19,18 @@ describe('Async actions', () => {
   });
   const mockAxiosAdapter = new MockAdapter(axiosInstance);
   const middleware = [thunk.withExtraArgument(axiosInstance)];
-  const mockStoreCreator = configureMockStore<State, Action<string>, AppThunkDispatch>(middleware);
+  const mockStoreCreator = configureMockStore<
+    State,
+    Action<string>,
+    AppThunkDispatch
+  >(middleware);
   let store: ReturnType<typeof mockStoreCreator>;
 
   beforeEach(() => {
     store = mockStoreCreator({
       offerDetails: {
-        data: null,
-        loading: false,
+        current: null,
+        currentLoading: false,
       },
     });
     mockAxiosAdapter.reset();
@@ -38,7 +46,9 @@ describe('Async actions', () => {
 
       const emittedActions = store.getActions();
       const extractedActionsTypes = extractActionsTypes(emittedActions);
-      const fetchByIdFulfilled = emittedActions.at(1) as ReturnType<typeof fetchById.fulfilled>;
+      const fetchByIdFulfilled = emittedActions.at(1) as ReturnType<
+        typeof fetchById.fulfilled
+      >;
 
       expect(extractedActionsTypes).toEqual([
         fetchById.pending.type,
@@ -62,4 +72,3 @@ describe('Async actions', () => {
     });
   });
 });
-
