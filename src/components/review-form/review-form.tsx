@@ -28,7 +28,10 @@ export function ReviewForm({ offerId }: { offerId: string }): JSX.Element {
       .then(() => {
         setFormData(DEFAULT_FORM_DATA);
       })
-      .catch(() => {});
+      .catch((error) => {
+        // eslint-disable-next-line no-console
+        console.error('Error posting review:', error);
+      });
   };
   const isValid = useMemo(
     () =>

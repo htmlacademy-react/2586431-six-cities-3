@@ -71,7 +71,5 @@ describe('usePageSuffix', () => {
     expect(result.current).toBe('index');
 
     rerender();
-    // При изменении маршрута через MemoryRouter нужно использовать другой подход
-    // Но для теста это нормально - хук должен реагировать на изменение pathname
   });
 });

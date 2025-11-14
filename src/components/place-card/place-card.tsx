@@ -4,6 +4,12 @@ import { favoritesActions, store } from '../../store';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { State } from '../../types/state';
 import { useSelector } from 'react-redux';
+import {
+  CITIES_IMAGE_HEIGHT,
+  CITIES_IMAGE_WIDTH,
+  FAVORITES_IMAGE_HEIGHT,
+  FAVORITES_IMAGE_WIDTH,
+} from './constants';
 
 type PlaceCardProps = {
   offer: TOffer;
@@ -48,8 +54,16 @@ export function PlaceCard({
         <img
           className="place-card__image"
           src={offer.previewImage}
-          width={viewMode === 'favorites' ? 150 : 260}
-          height={viewMode === 'favorites' ? 110 : 200}
+          width={
+            viewMode === 'favorites'
+              ? FAVORITES_IMAGE_WIDTH
+              : CITIES_IMAGE_WIDTH
+          }
+          height={
+            viewMode === 'favorites'
+              ? FAVORITES_IMAGE_HEIGHT
+              : CITIES_IMAGE_HEIGHT
+          }
           alt="Place image"
         />
       </div>
@@ -85,7 +99,9 @@ export function PlaceCard({
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${offer.id}`}>{offer.title}</Link>
+          <Link to={AppRoute.Offer.replace(':id', offer.id)}>
+            {offer.title}
+          </Link>
         </h2>
         <p className="place-card__type" style={{ textTransform: 'capitalize' }}>
           {offer.type}

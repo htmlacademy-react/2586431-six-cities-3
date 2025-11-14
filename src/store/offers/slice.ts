@@ -41,18 +41,15 @@ const offersSlice = createSlice({
       state.nearby = [];
     });
 
-    // обновляем основной список и список ближайших офферов при изменении статуса избранного
     builder.addCase(setStatus.fulfilled, (state, action) => {
       const updatedOffer = action.payload;
       const { offerId } = action.meta.arg;
 
-      // обновляем основной список, если там есть этот оффер
       const offerIndex = state.list.findIndex((offer) => offer.id === offerId);
       if (offerIndex !== -1) {
         state.list[offerIndex] = updatedOffer;
       }
 
-      // аналогично обновляем список ближайших офферов
       const nearbyIndex = state.nearby.findIndex(
         (offer) => offer.id === offerId
       );

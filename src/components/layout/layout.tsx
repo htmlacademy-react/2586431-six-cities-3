@@ -21,7 +21,6 @@ function Layout() {
     (state: State) => state.favorites.list?.length ?? 0
   );
   useEffect(() => {
-    // грузим только для авторизованных пользователей
     if (auth !== AuthorizationStatus.Auth) {
       return;
     }
@@ -90,9 +89,7 @@ function Layout() {
                         to={AppRoute.Login}
                       >
                         <div className="header__avatar-wrapper user__avatar-wrapper"></div>
-                        <a className="header__login" href="#">
-                          Sign in
-                        </a>
+                        <span className="header__login">Sign in</span>
                       </Link>
                     </li>
                   </ul>

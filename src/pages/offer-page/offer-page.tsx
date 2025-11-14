@@ -14,7 +14,12 @@ import {
 import { store } from '../../store';
 import { Spinner } from '../../components/spinner';
 import { NotFoundPage } from '../404-page';
-import { AppRoute, AuthorizationStatus } from '../../constants';
+import {
+  AppRoute,
+  AuthorizationStatus,
+  MAX_OFFERS_IMAGES_COUNT,
+  MAX_OFFERS_NEARBY_COUNT,
+} from '../../constants';
 import classNames from 'classnames';
 
 type OfferPageParams = { id: string };
@@ -29,7 +34,7 @@ function OfferPage(): JSX.Element {
   );
   const offersNearby = useSelector((state: State) => state.offers.nearby);
   const offersNearbyToShow = useMemo(
-    () => offersNearby.slice(0, 3),
+    () => offersNearby.slice(0, MAX_OFFERS_NEARBY_COUNT),
     [offersNearby]
   );
   const offersOnMap = useMemo(
@@ -42,13 +47,12 @@ function OfferPage(): JSX.Element {
   );
 
   const imagesToShow = useMemo(
-    () => offer?.images.slice(0, 6) ?? [],
+    () => offer?.images.slice(0, MAX_OFFERS_IMAGES_COUNT) ?? [],
     [offer?.images]
   );
 
   useEffect(() => {
     if (!id) {
-      // такого быть никогда не должно, но всё же
       return;
     }
     store.dispatch(offerDetailsActions.fetchById(id));
@@ -154,7 +158,7 @@ function OfferPage(): JSX.Element {
               <div className="offer__inside">
                 <h2 className="offer__inside-title">What&apos;s inside</h2>
                 <ul className="offer__inside-list">
-                  {offer.goods.map((good) => (
+                  {offer.goods?.map((good) => (
                     <li className="offer__inside-item" key={good}>
                       {good}
                     </li>

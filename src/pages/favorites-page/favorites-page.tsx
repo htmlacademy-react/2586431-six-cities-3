@@ -8,7 +8,6 @@ import { store, favoritesActions } from '../../store';
 function FavoritesPage(): JSX.Element {
   const favoritesList = useSelector((state: State) => state.favorites.list);
   useEffect(() => {
-    // по идее их уже загрузит layout, но если нет, то загружаем здесь
     if (favoritesList) {
       return;
     }

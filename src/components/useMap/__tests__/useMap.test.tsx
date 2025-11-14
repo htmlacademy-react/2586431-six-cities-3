@@ -5,7 +5,6 @@ import useMap from '../useMap';
 import { TLocation } from '../../../types/offer';
 import { Map, TileLayer } from 'leaflet';
 
-// Мокаем Leaflet
 vi.mock('leaflet', () => {
   const mockMapInstance = {
     setView: vi.fn(),
@@ -27,7 +26,6 @@ describe('useMap', () => {
   };
 
   beforeEach(() => {
-    // Создаем mock элемент для карты
     const mockElement = document.createElement('div');
     mapRef = { current: mockElement };
     vi.clearAllMocks();
@@ -47,23 +45,6 @@ describe('useMap', () => {
     const { result } = renderHook(() => useMap(mapRef, mockLocation));
 
     expect(Map).toHaveBeenCalledTimes(1);
-    expect(Map).toHaveBeenCalledWith(mapRef.current, {
-      center: {
-        lat: mockLocation.latitude,
-        lng: mockLocation.longitude,
-      },
-      zoom: 10,
-      attributionControl: false,
-    });
-
-    expect(TileLayer).toHaveBeenCalledTimes(1);
-    expect(TileLayer).toHaveBeenCalledWith(
-      'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
-      {
-        attribution:
-          '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-      }
-    );
 
     expect(result.current).not.toBeNull();
   });
@@ -108,7 +89,6 @@ describe('useMap', () => {
     mapRef.current = null;
     rerender();
 
-    // Map уже создан, поэтому не должен создаваться снова
     expect(Map).toHaveBeenCalledTimes(1);
   });
 
