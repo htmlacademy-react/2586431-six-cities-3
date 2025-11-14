@@ -13,8 +13,6 @@ describe('ReviewsItem', () => {
         name: 'John Doe',
         avatarUrl: 'avatar.jpg',
         isPro: true,
-        email: 'john@test.com',
-        token: 'token',
       },
     });
 

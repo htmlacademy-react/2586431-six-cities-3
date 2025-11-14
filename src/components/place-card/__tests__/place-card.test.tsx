@@ -1,5 +1,6 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { Provider } from 'react-redux';
 import { MemoryRouter } from 'react-router-dom';
 import { configureMockStore } from '@jedmao/redux-mock-store';
@@ -7,9 +8,27 @@ import { PlaceCard } from '../place-card';
 import { createMockOffer } from '../../../store/__tests__/test-utils';
 import { AuthorizationStatus } from '../../../constants';
 import { State } from '../../../types/state';
+import { store } from '../../../store';
+
+vi.mock('../../../store', async () => {
+  const actual = await vi.importActual<typeof import('../../../store')>(
+    '../../../store'
+  );
+  const mockDispatch = vi.fn();
+  return {
+    ...actual,
+    store: {
+      dispatch: mockDispatch,
+    },
+  };
+});
 
 describe('PlaceCard', () => {
   const mockStoreCreator = configureMockStore<State>();
+
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
 
   it('should render correctly', () => {
     const offer = createMockOffer({
@@ -21,7 +40,7 @@ describe('PlaceCard', () => {
       isPremium: true,
     });
 
-    const store = mockStoreCreator({
+    const mockStore = mockStoreCreator({
       auth: {
         status: AuthorizationStatus.Auth,
         authorizationLoading: false,
@@ -31,7 +50,7 @@ describe('PlaceCard', () => {
     });
 
     render(
-      <Provider store={store}>
+      <Provider store={mockStore}>
         <MemoryRouter>
           <PlaceCard offer={offer} />
         </MemoryRouter>
@@ -47,7 +66,7 @@ describe('PlaceCard', () => {
   it('should render bookmark button when user is authorized', () => {
     const offer = createMockOffer({ isFavorite: false });
 
-    const store = mockStoreCreator({
+    const mockStore = mockStoreCreator({
       auth: {
         status: AuthorizationStatus.Auth,
         authorizationLoading: false,
@@ -57,7 +76,7 @@ describe('PlaceCard', () => {
     });
 
     render(
-      <Provider store={store}>
+      <Provider store={mockStore}>
         <MemoryRouter>
           <PlaceCard offer={offer} />
         </MemoryRouter>
@@ -70,7 +89,7 @@ describe('PlaceCard', () => {
   it('should not render bookmark button when user is not authorized', () => {
     const offer = createMockOffer();
 
-    const store = mockStoreCreator({
+    const mockStore = mockStoreCreator({
       auth: {
         status: AuthorizationStatus.NoAuth,
         authorizationLoading: false,
@@ -80,7 +99,7 @@ describe('PlaceCard', () => {
     });
 
     render(
-      <Provider store={store}>
+      <Provider store={mockStore}>
         <MemoryRouter>
           <PlaceCard offer={offer} />
         </MemoryRouter>
@@ -93,7 +112,7 @@ describe('PlaceCard', () => {
   it('should render with favorites viewMode', () => {
     const offer = createMockOffer({ title: 'Favorite Offer' });
 
-    const store = mockStoreCreator({
+    const mockStore = mockStoreCreator({
       auth: {
         status: AuthorizationStatus.Auth,
         authorizationLoading: false,
@@ -103,7 +122,7 @@ describe('PlaceCard', () => {
     });
 
     const { container } = render(
-      <Provider store={store}>
+      <Provider store={mockStore}>
         <MemoryRouter>
           <PlaceCard offer={offer} viewMode="favorites" />
         </MemoryRouter>
@@ -111,5 +130,91 @@ describe('PlaceCard', () => {
     );
 
     expect(container.querySelector('.favorites__card')).toBeInTheDocument();
+  });
+
+  it('should dispatch setStatus action when bookmark button is clicked', async () => {
+    const user = userEvent.setup();
+    const offer = createMockOffer({ id: '1', isFavorite: false });
+
+    const mockStore = mockStoreCreator({
+      auth: {
+        status: AuthorizationStatus.Auth,
+        authorizationLoading: false,
+        loginLoading: false,
+        user: null,
+      },
+    });
+
+    render(
+      <Provider store={mockStore}>
+        <MemoryRouter>
+          <PlaceCard offer={offer} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const bookmarkButton = screen.getByRole('button');
+    await user.click(bookmarkButton);
+
+    expect(store.dispatch).toHaveBeenCalledOnce();
+  });
+
+  it('should call onMouseEnter when mouse enters card', async () => {
+    const user = userEvent.setup();
+    const onMouseEnter = vi.fn();
+    const offer = createMockOffer();
+
+    const mockStore = mockStoreCreator({
+      auth: {
+        status: AuthorizationStatus.NoAuth,
+        authorizationLoading: false,
+        loginLoading: false,
+        user: null,
+      },
+    });
+
+    const { container } = render(
+      <Provider store={mockStore}>
+        <MemoryRouter>
+          <PlaceCard offer={offer} onMouseEnter={onMouseEnter} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const card = container.querySelector('.place-card');
+    if (card) {
+      await user.hover(card);
+      expect(onMouseEnter).toHaveBeenCalled();
+    }
+  });
+
+  it('should call onMouseLeave when mouse leaves card', async () => {
+    const user = userEvent.setup();
+    const onMouseLeave = vi.fn();
+    const offer = createMockOffer();
+
+    const mockStore = mockStoreCreator({
+      auth: {
+        status: AuthorizationStatus.NoAuth,
+        authorizationLoading: false,
+        loginLoading: false,
+        user: null,
+      },
+    });
+
+    const { container } = render(
+      <Provider store={mockStore}>
+        <MemoryRouter>
+          <PlaceCard offer={offer} onMouseLeave={onMouseLeave} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const card = container.querySelector('.place-card');
+    if (card) {
+      await user.hover(card);
+      await user.unhover(card);
+      expect(onMouseLeave).toHaveBeenCalled();
+    }
   });
 });

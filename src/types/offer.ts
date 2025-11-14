@@ -28,7 +28,7 @@ export type TOfferDetails = Omit<TOffer, 'previewImage'> & {
   description: string;
   bedrooms: number;
   goods: string[];
-  host: TUser;
+  host: Pick<TUser, 'name' | 'avatarUrl' | 'isPro'>;
   images: string[];
   maxAdults: number;
 };

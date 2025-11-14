@@ -7,4 +7,6 @@ export const classNames = (
     ...Object.entries(classMap)
       .filter(([, value]) => value)
       .map(([key]) => key),
-  ].join(' ');
+  ]
+    .join(' ')
+    .trim();

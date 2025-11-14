@@ -5,5 +5,5 @@ export type TReview = {
   comment: string;
   rating: number;
   date: string;
-  user: TUser;
+  user: Pick<TUser, 'name' | 'avatarUrl' | 'isPro'>;
 };
