@@ -2,28 +2,24 @@ import { useRef, useEffect } from 'react';
 import { Icon, Marker, layerGroup } from 'leaflet';
 import useMap from '../useMap';
 import { TLocation, TOffer } from '../../types/offer';
-import {
-  URL_MARKER_DEFAULT,
-  URL_MARKER_CURRENT,
-  DEFAULT_ZOOM,
-} from '../../constants';
+import { DEFAULT_ZOOM } from '../../constants';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   centerLocation: TLocation;
-  offers: TOffer[];
+  offers: Pick<TOffer, 'id' | 'location'>[];
   selectedOfferId?: string | null;
   className?: string;
 };
 
 const defaultCustomIcon = new Icon({
-  iconUrl: URL_MARKER_DEFAULT,
+  iconUrl: 'img/pin.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
 
 const currentCustomIcon = new Icon({
-  iconUrl: URL_MARKER_CURRENT,
+  iconUrl: 'img/pin-active.svg',
   iconSize: [40, 40],
   iconAnchor: [20, 40],
 });
@@ -68,17 +64,13 @@ function Map(props: MapProps): JSX.Element {
         centerLocation.zoom ?? DEFAULT_ZOOM
       );
     }
-  }, [
-    map,
-    centerLocation.latitude,
-    centerLocation.longitude,
-    centerLocation.zoom,
-  ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, centerLocation.latitude, centerLocation.longitude]);
 
   return (
     <div
       className={`${className ?? ''} map`}
-      style={{ height: '500px' }}
+      style={{ height: '500px', margin: '0 10px' }}
       ref={mapRef}
     />
   );

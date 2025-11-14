@@ -2,6 +2,7 @@ import { Navigate } from 'react-router-dom';
 import { AppRoute, AuthorizationStatus } from '../../constants';
 import { useSelector } from 'react-redux';
 import { State } from '../../types/state';
+import { Spinner } from '../spinner';
 
 type PrivateRouteProps = {
   /** Доступ разрешен */
@@ -15,8 +16,17 @@ function PrivateRoute(props: PrivateRouteProps): JSX.Element {
   const accessGranted = useSelector(
     (state: State) => state.auth.status === AuthorizationStatus.Auth
   );
+  const accessDenied = useSelector(
+    (state: State) => state.auth.status === AuthorizationStatus.NoAuth
+  );
 
-  return accessGranted ? children : <Navigate to={redirectTo} />;
+  if (accessGranted) {
+    return children;
+  }
+  if (accessDenied) {
+    return <Navigate to={redirectTo} />;
+  }
+  return <Spinner />;
 }
 
 export default PrivateRoute;

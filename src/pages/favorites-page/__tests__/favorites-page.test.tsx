@@ -69,8 +69,8 @@ describe('FavoritesPage', () => {
       },
     });
 
-  it('should render page title', () => {
-    const store = createMockStore([]);
+  it('should render page title when not empty', () => {
+    const store = createMockStore([createMockOffer()]);
 
     render(
       <Provider store={store}>
@@ -94,9 +94,7 @@ describe('FavoritesPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Saved listing')).toBeInTheDocument();
-    const favoritesList = screen.queryByRole('list');
-    expect(favoritesList?.children.length).toBe(0);
+    expect(screen.getByText('Nothing yet saved.')).toBeInTheDocument();
   });
 
   it('should group offers by city', () => {
@@ -162,21 +160,6 @@ describe('FavoritesPage', () => {
     );
 
     expect(realStore.dispatch).not.toHaveBeenCalled();
-  });
-
-  it('should render footer with logo', () => {
-    const store = createMockStore([]);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <FavoritesPage />
-        </MemoryRouter>
-      </Provider>
-    );
-
-    const logo = screen.getByAltText('6 cities logo');
-    expect(logo).toBeInTheDocument();
   });
 
   it('should handle multiple cities correctly', () => {

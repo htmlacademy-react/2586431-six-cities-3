@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { TReview } from '../../types/review';
+import classNames from 'classnames';
 
 export function ReviewsItem({ review }: { review: TReview }): JSX.Element {
   const { user, comment, rating, date } = review;
@@ -14,7 +15,14 @@ export function ReviewsItem({ review }: { review: TReview }): JSX.Element {
   return (
     <li className="reviews__item">
       <div className="reviews__user user">
-        <div className="reviews__avatar-wrapper user__avatar-wrapper">
+        <div
+          className={classNames(
+            'reviews__avatar-wrapper user__avatar-wrapper',
+            {
+              'reviews__avatar-wrapper--pro': user.isPro,
+            }
+          )}
+        >
           <img
             className="reviews__avatar user__avatar"
             src={user.avatarUrl}

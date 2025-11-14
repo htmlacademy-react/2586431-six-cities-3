@@ -26,4 +26,38 @@ describe('ReviewsItem', () => {
       'avatar.jpg'
     );
   });
+
+  it('should have pro class when user is pro', () => {
+    const review = createMockReview({
+      user: {
+        name: 'John Doe',
+        avatarUrl: 'avatar.jpg',
+        isPro: true,
+      },
+    });
+
+    const { container } = render(<ReviewsItem review={review} />);
+
+    const avatarWrapper = container.querySelector(
+      '.reviews__avatar-wrapper--pro'
+    );
+    expect(avatarWrapper).toBeInTheDocument();
+  });
+
+  it('should not have pro class when user is not pro', () => {
+    const review = createMockReview({
+      user: {
+        name: 'Jane Doe',
+        avatarUrl: 'avatar2.jpg',
+        isPro: false,
+      },
+    });
+
+    const { container } = render(<ReviewsItem review={review} />);
+
+    const avatarWrapper = container.querySelector(
+      '.reviews__avatar-wrapper--pro'
+    );
+    expect(avatarWrapper).not.toBeInTheDocument();
+  });
 });

@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { PlaceCard } from '../place-card';
 import { createMockOffer } from '../../../store/__tests__/test-utils';
-import { AuthorizationStatus } from '../../../constants';
+import { AppRoute, AuthorizationStatus } from '../../../constants';
 import { State } from '../../../types/state';
 import { store } from '../../../store';
 
@@ -20,6 +20,17 @@ vi.mock('../../../store', async () => {
     store: {
       dispatch: mockDispatch,
     },
+  };
+});
+
+const mockNavigate = vi.fn();
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual<typeof import('react-router-dom')>(
+    'react-router-dom'
+  );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
   };
 });
 
@@ -86,7 +97,8 @@ describe('PlaceCard', () => {
     expect(screen.getByRole('button')).toBeInTheDocument();
   });
 
-  it('should not render bookmark button when user is not authorized', () => {
+  it('should navigate to login page when bookmark button is clicked and user is not authorized', async () => {
+    const user = userEvent.setup();
     const offer = createMockOffer();
 
     const mockStore = mockStoreCreator({
@@ -106,7 +118,10 @@ describe('PlaceCard', () => {
       </Provider>
     );
 
-    expect(screen.queryByRole('button')).not.toBeInTheDocument();
+    const bookmarkButton = screen.getByRole('button');
+    await user.click(bookmarkButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith(AppRoute.Login);
   });
 
   it('should render with favorites viewMode', () => {

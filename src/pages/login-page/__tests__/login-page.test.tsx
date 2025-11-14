@@ -6,8 +6,8 @@ import { MemoryRouter } from 'react-router-dom';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { LoginPage } from '../login-page';
 import { State } from '../../../types/state';
-import { AuthorizationStatus, AppRoute } from '../../../constants';
-import { store as realStore } from '../../../store';
+import { AuthorizationStatus, AppRoute, CITIES } from '../../../constants';
+import { filtersActions, store as realStore } from '../../../store';
 
 const mockNavigate = vi.fn();
 
@@ -187,7 +187,7 @@ describe('LoginPage', () => {
     );
   });
 
-  it('should render locations section', () => {
+  it('should render random city', () => {
     const store = createMockStore();
 
     render(
@@ -198,7 +198,31 @@ describe('LoginPage', () => {
       </Provider>
     );
 
-    expect(screen.getByText('Amsterdam')).toBeInTheDocument();
+    const randomCityLink = screen.getByTestId('random-city-link');
+    expect(randomCityLink).toBeInTheDocument();
+    expect(randomCityLink).toHaveTextContent(new RegExp(CITIES.join('|')));
+  });
+
+  it('should navigate to random city when random city link is clicked', async () => {
+    const user = userEvent.setup();
+    const store = createMockStore();
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <LoginPage />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const randomCityLink = screen.getByTestId('random-city-link');
+    const randomCity = randomCityLink.textContent;
+    await user.click(randomCityLink);
+
+    expect(mockNavigate).toHaveBeenCalledWith(AppRoute.Root);
+    expect(realStore.dispatch).toHaveBeenCalledWith(
+      filtersActions.changeCity(randomCity)
+    );
   });
 
   it('should update redirect when auth status changes', () => {

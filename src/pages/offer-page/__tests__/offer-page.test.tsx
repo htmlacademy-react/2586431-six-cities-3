@@ -6,7 +6,7 @@ import { MemoryRouter } from 'react-router-dom';
 import { configureMockStore } from '@jedmao/redux-mock-store';
 import { OfferPage } from '../offer-page';
 import { State } from '../../../types/state';
-import { AuthorizationStatus } from '../../../constants';
+import { AppRoute, AuthorizationStatus } from '../../../constants';
 import {
   createMockOffer,
   createMockOfferDetails,
@@ -38,6 +38,18 @@ vi.mock('../../../store', async () => {
       subscribe: vi.fn(),
       replaceReducer: vi.fn(),
     },
+  };
+});
+
+const mockNavigate = vi.fn();
+
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual<typeof import('react-router-dom')>(
+    'react-router-dom'
+  );
+  return {
+    ...actual,
+    useNavigate: () => mockNavigate,
   };
 });
 
@@ -253,7 +265,8 @@ describe('OfferPage', () => {
     expect(bookmarkButton).toBeInTheDocument();
   });
 
-  it('should not render bookmark button when user is not authorized', () => {
+  it('should navigate to login page when bookmark button is clicked and user is not authorized', async () => {
+    const user = userEvent.setup();
     const offer = createMockOfferDetails({
       id: '123',
       isFavorite: false,
@@ -274,8 +287,10 @@ describe('OfferPage', () => {
       </Provider>
     );
 
-    const bookmarkButton = screen.queryByRole('button', { name: /bookmark/i });
-    expect(bookmarkButton).not.toBeInTheDocument();
+    const bookmarkButton = screen.getByRole('button', { name: /bookmark/i });
+    await user.click(bookmarkButton);
+
+    expect(mockNavigate).toHaveBeenCalledWith(AppRoute.Login);
   });
 
   it('should dispatch setStatus when bookmark button is clicked', async () => {

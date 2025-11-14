@@ -14,7 +14,7 @@ describe('RatingStar', () => {
       <RatingStar value={value} onChange={mockOnChange} rating={rating} />
     );
 
-    const input = screen.getByRole('radio');
+    const input = screen.getByRole('checkbox');
     expect(input).toBeInTheDocument();
     expect(input).toHaveAttribute('id', '5-stars');
     expect(input).toHaveAttribute('value', String(value));
@@ -32,7 +32,7 @@ describe('RatingStar', () => {
       <RatingStar value={value} onChange={mockOnChange} rating={rating} />
     );
 
-    const input = screen.getByRole('radio');
+    const input = screen.getByRole('checkbox');
     expect(input).toBeChecked();
   });
 
@@ -44,7 +44,7 @@ describe('RatingStar', () => {
       <RatingStar value={value} onChange={mockOnChange} rating={rating} />
     );
 
-    const input = screen.getByRole('radio');
+    const input = screen.getByRole('checkbox');
     expect(input).not.toBeChecked();
   });
 
@@ -56,7 +56,7 @@ describe('RatingStar', () => {
 
     render(<RatingStar value={value} onChange={onChange} rating={rating} />);
 
-    const input = screen.getByRole('radio');
+    const input = screen.getByRole('checkbox');
     await user.click(input);
 
     expect(onChange).toHaveBeenCalledWith(rating);

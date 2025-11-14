@@ -13,12 +13,6 @@ export enum AuthorizationStatus {
   Unknown = 'UNKNOWN',
 }
 
-export const URL_MARKER_DEFAULT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/pin.svg';
-
-export const URL_MARKER_CURRENT =
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/demo/interactive-map/main-pin.svg';
-
 export const CITIES = [
   'Paris',
   'Cologne',
@@ -26,7 +20,7 @@ export const CITIES = [
   'Amsterdam',
   'Hamburg',
   'Dusseldorf',
-];
+] as const;
 
 export const CITY_CENTER_LOCATIONS: Record<string, TLocation> = {
   Paris: {
@@ -92,3 +86,6 @@ export const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities';
 export const AUTH_TOKEN_KEY = 'six-cities-auth-token';
 
 export const MAX_REVIEWS_COUNT = 10;
+
+export const MIN_COMMENT_LENGTH = 50;
+export const MAX_COMMENT_LENGTH = 250;
