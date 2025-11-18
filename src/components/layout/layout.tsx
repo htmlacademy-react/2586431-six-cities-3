@@ -32,7 +32,9 @@ function Layout() {
   return (
     <div
       className={classNames('page', {
-        'page--gray page--login': pageSuffix === 'login',
+        'page--gray': ['index', 'login'].includes(pageSuffix ?? ''),
+        'page--main': pageSuffix === 'index',
+        'page--login': pageSuffix === 'login',
         'page--favorites-empty':
           pageSuffix === 'favorites' && favoritesCount === 0,
       })}

@@ -1,2 +1,2 @@
 export { default as tokenHelper } from './token';
-export { classNames } from './classNames';
+export { classNames } from './class-names';

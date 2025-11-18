@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { classNames } from '../classNames';
+import { classNames } from '../class-names';
 
 describe('classNames', () => {
   it('should return base class when classMap is empty', () => {
