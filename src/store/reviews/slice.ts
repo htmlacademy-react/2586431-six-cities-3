@@ -15,7 +15,7 @@ const reviewsSlice = createSlice({
   extraReducers: (builder) => {
     // fetchReviews
     builder.addCase(fetchList.fulfilled, (state, action) => {
-      state.list = Array.from(action.payload).toSorted((a, b) =>
+      state.list = Array.from(action.payload).sort((a, b) =>
         a.date > b.date ? -1 : 1
       );
       state.listLoading = false;
