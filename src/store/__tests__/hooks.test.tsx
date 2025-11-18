@@ -207,7 +207,6 @@ describe('useOffersList', () => {
     expect(result.current).toHaveLength(1);
     expect(result.current[0].id).toBe('1');
 
-    // Изменяем город в store
     const newStore = createMockStore([parisOffer, amsterdamOffer], 'Amsterdam');
     store.getState = () => newStore.getState();
 

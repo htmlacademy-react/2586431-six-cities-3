@@ -129,7 +129,6 @@ describe('rootReducer', () => {
       filtersActions.changeCity('Amsterdam')
     );
 
-    // Проверяем, что исходное состояние не изменилось
     expect(initialState.filters.city).toBe(CITIES[0]);
     expect(newState.filters.city).toBe('Amsterdam');
   });

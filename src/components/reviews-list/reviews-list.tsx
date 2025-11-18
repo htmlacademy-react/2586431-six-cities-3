@@ -9,10 +9,7 @@ import { MAX_REVIEWS_COUNT } from '../../constants';
 export function ReviewsList({ offerId }: { offerId: string }): JSX.Element {
   const reviews = useSelector((state: State) => state.reviews.list);
   const reviewsSlice = useMemo(
-    () =>
-      reviews
-        ?.sort((a, b) => (a.date > b.date ? -1 : 1))
-        .slice(0, MAX_REVIEWS_COUNT) ?? [],
+    () => reviews.slice(0, MAX_REVIEWS_COUNT) ?? [],
     [reviews]
   );
   const reviewsCount = reviews?.length ?? 0;

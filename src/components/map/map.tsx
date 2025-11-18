@@ -14,13 +14,13 @@ type MapProps = {
 
 const defaultCustomIcon = new Icon({
   iconUrl: 'img/pin.svg',
-  iconSize: [40, 40],
+  iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
 const currentCustomIcon = new Icon({
   iconUrl: 'img/pin-active.svg',
-  iconSize: [40, 40],
+  iconSize: [27, 39],
   iconAnchor: [20, 40],
 });
 
@@ -67,13 +67,7 @@ function Map(props: MapProps): JSX.Element {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [map, centerLocation.latitude, centerLocation.longitude]);
 
-  return (
-    <div
-      className={`${className ?? ''} map`}
-      style={{ height: '500px', margin: '0 10px' }}
-      ref={mapRef}
-    />
-  );
+  return <div className={`${className ?? ''} map`} ref={mapRef} />;
 }
 
 export default Map;

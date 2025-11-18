@@ -56,7 +56,7 @@ describe('reviewsSlice', () => {
       expect(state.postNewLoading).toBe(true);
     });
 
-    it('should append review on fulfilled', () => {
+    it('should prepend review on fulfilled', () => {
       const existingReview = createMockReview({ id: '1' });
       const stateWithReviews = reviewsSlice.reducer(
         initialState,
@@ -71,7 +71,7 @@ describe('reviewsSlice', () => {
           offerId: '1',
         })
       );
-      expect(state.list).toEqual([existingReview, newReview]);
+      expect(state.list).toEqual([newReview, existingReview]);
       expect(state.postNewLoading).toBe(false);
     });
 

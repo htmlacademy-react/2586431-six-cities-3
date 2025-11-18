@@ -54,7 +54,6 @@ describe('Map', () => {
 
     const mapElement = container.querySelector('.map');
     expect(mapElement).toBeInTheDocument();
-    expect(mapElement).toHaveStyle({ height: '500px' });
   });
 
   it('should apply custom className', () => {

@@ -26,7 +26,7 @@ export const RatingStar = ({
       className="form__rating-input visually-hidden"
       name="rating"
       value={value}
-      onClick={() => {
+      onChange={() => {
         onChange(rating);
       }}
       checked={value >= rating}

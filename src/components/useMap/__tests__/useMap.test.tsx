@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import React from 'react';
-import useMap from '../useMap';
+import useMap from '../use-map';
 import { TLocation } from '../../../types/offer';
 import { Map, TileLayer } from 'leaflet';
 
